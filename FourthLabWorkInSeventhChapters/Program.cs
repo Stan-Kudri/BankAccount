@@ -17,4 +17,17 @@
 
 using FourthLabWorkInSeventhChapters;
 
-BankAccount.Run();
+
+var person = new BankAccount(12345678, 500, BankAccountType.Saving);
+Console.WriteLine(person);
+person.ToPutMoney(235);
+Console.WriteLine(person);
+person.WithdrawMoney(1000);
+Console.WriteLine(person);
+var array = new BankAccount[500];
+for (int i = 0; i < array.Length; i++)
+{
+    array[i] = new BankAccount(500, BankAccountType.Current);
+}
+foreach (var item in array)
+    Console.WriteLine(item);

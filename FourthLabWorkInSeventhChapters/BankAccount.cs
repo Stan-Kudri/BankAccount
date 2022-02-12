@@ -23,79 +23,52 @@
 
     public class BankAccount
     {
-        private static int _numberRandom = new Random().Next(10000000, 99999999);
+        private static int _number = 10000000;
         private readonly int _numberAccount;
         private int _balance;
         private readonly BankAccountType _type;
 
-        public BankAccount()
-        {
-            _numberAccount = GenerateNumberAccount;
-            _balance = 5000000;
-            _type = BankAccountType.Saving;
-        }
+        private int GenerateNumberAccount => _number + 1 <= 99999999 ? _number++ : throw new Exception("Номера банковских счетов закончились!");
+
+        private string TypeBankAccountUserFriendlyName => _type == BankAccountType.Saving ? "Сберегательный" : "Накопительный";
 
         public BankAccount(int numberAccount, int balanceAcount, BankAccountType type)
         {
-            ValidateAcountBalance(numberAccount, balanceAcount);
+
+            if (numberAccount >= 99999999 && numberAccount <= 10000000)
+                throw new Exception("Номер счета содержит 8 цифр!");
+            if (balanceAcount < 0)
+                throw new Exception("Баланс на счету должен быть отличным от нуля!");
             _numberAccount = numberAccount;
             _balance = balanceAcount;
             _type = type;
         }
 
-        public void WithdrawMoney(int amountOfMony)
+        public BankAccount(int balanceAcount, BankAccountType type)
         {
-            ValidateOperationOfAmountValue(amountOfMony);
-            if (_balance >= amountOfMony)
-                _balance -= amountOfMony;
+            if (balanceAcount < 0)
+                throw new Exception("Баланс на счету должен быть отличным от нуля!");
+            _numberAccount = GenerateNumberAccount;
+            _balance = balanceAcount;
+            _type = type;
         }
 
-        public void ToPutMoney(int amountOfMony)
+        public void WithdrawMoney(uint amountOfMony)
         {
-            ValidateOperationOfAmountValue(amountOfMony);
-            _balance += amountOfMony;
+            if (_balance >= amountOfMony)
+                _balance -= (int)amountOfMony;
+            else
+                Console.WriteLine("{0} рублей снять не удалось с :", amountOfMony);
+        }
+
+        public void ToPutMoney(uint amountOfMony)
+        {
+            _balance += (int)amountOfMony;
         }
 
         public override string ToString()
         {
-            return string.Format("Номер счета:{0}. Баланс банковского счета {1} руб. Тип банковского счета - {2}", _numberAccount, _balance, TypeBankAccount());
-        }
-
-        public static void Run()
-        {
-            var person = new BankAccount();
-            Console.WriteLine(person);
-            person.ToPutMoney(235);
-            Console.WriteLine(person);
-            person.WithdrawMoney(500000);
-            Console.WriteLine(person);
-            var parson1 = new BankAccount(12345678, 500, BankAccountType.Saving);
-            Console.WriteLine(parson1);
-        }
-
-        private static int GenerateNumberAccount
-        {
-            get
-            {
-                var value = 15;
-                return _numberRandom + value <= 99999999 ? _numberRandom + value : _numberRandom - 555;
-            }
-        }
-
-        private string TypeBankAccount() => _type == BankAccountType.Saving ? "Сберегательный" : "Накопительный";
-
-        private static void ValidateAcountBalance(int numberAccount, int balanceAcount)
-        {
-            if (numberAccount >= 99999999 && numberAccount <= 10000000)
-                throw new Exception("Номер счета содержит 8 цифр!");
-            if (balanceAcount < 0)
-                throw new Exception("Баланс на счету должен быть отличным от нуля!");
-        }
-
-        private void ValidateOperationOfAmountValue(int amountValue)
-        {
-            if (amountValue < 0)
-                throw new Exception("Деньги при проведении операции должны быть с положительным значением!");
+            return string.Format("Номер счета:{0}. Баланс банковского счета {1} руб. Тип банковского счета - {2}", _numberAccount, _balance, TypeBankAccountUserFriendlyName);
         }
     }
 }
