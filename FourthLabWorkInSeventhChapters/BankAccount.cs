@@ -19,7 +19,12 @@
 Упражнение 7.3 Добавить в класс счет в банке два метода: снять со счета 
 и положить на счет. Метод снять со счета проверяет, возможно ли снять 
 запрашиваемую сумму, и в случае положительного результата изменяет баланс. 
-*/
+
+Упражнение 8.1 В класс банковский счет, созданный в упражнениях 7.1-
+7.3 добавить метод, который переводит деньги с одного счета на другой. У 
+метода два параметра: ссылка на объект класса банковский счет откуда 
+снимаются деньги, второй параметр – сумма
+     */
 
     public class BankAccount
     {
@@ -58,12 +63,22 @@
             if (_balance >= amountOfMony)
                 _balance -= (int)amountOfMony;
             else
-                Console.WriteLine("{0} рублей снять не удалось с :", amountOfMony);
+                Console.WriteLine("{0} рублей снять/перевести не удалось с :", amountOfMony);
         }
 
         public void ToPutMoney(ushort amountOfMony)
         {
             _balance += (int)amountOfMony;
+        }
+
+        public void TransferOfMoney(BankAccount account, ushort amountOfMony)
+        {
+            if (_balance >= amountOfMony)
+            {
+                this.WithdrawMoney(amountOfMony);
+                account.ToPutMoney(amountOfMony);
+            }
+            Console.WriteLine("Перевод со счета {0} на счет {1}: {2} рублей", _numberAccount, account._numberAccount, amountOfMony);
         }
 
         public override string ToString()

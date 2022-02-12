@@ -18,16 +18,11 @@
 using FourthLabWorkInSeventhChapters;
 
 
-var person = new BankAccount(12345678, 500, BankAccountType.Saving);
-Console.WriteLine(person);
-person.ToPutMoney(235);
-Console.WriteLine(person);
-person.WithdrawMoney(1000);
-Console.WriteLine(person);
-var array = new BankAccount[500];
-for (int i = 0; i < array.Length; i++)
-{
-    array[i] = new BankAccount(500, BankAccountType.Current);
-}
-foreach (var item in array)
-    Console.WriteLine(item);
+var person1 = new BankAccount(12345678, 500, BankAccountType.Saving);
+Console.WriteLine(person1);
+person1.ToPutMoney(235);
+Console.WriteLine(person1);
+
+var person2 = new BankAccount(12245678, 1000, BankAccountType.Current);
+person2.TransferOfMoney(person1, 1000);
+Console.WriteLine(person2);
