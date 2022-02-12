@@ -53,7 +53,7 @@
             _type = type;
         }
 
-        public void WithdrawMoney(uint amountOfMony)
+        public void WithdrawMoney(ushort amountOfMony)
         {
             if (_balance >= amountOfMony)
                 _balance -= (int)amountOfMony;
@@ -61,7 +61,7 @@
                 Console.WriteLine("{0} рублей снять не удалось с :", amountOfMony);
         }
 
-        public void ToPutMoney(uint amountOfMony)
+        public void ToPutMoney(ushort amountOfMony)
         {
             _balance += (int)amountOfMony;
         }
