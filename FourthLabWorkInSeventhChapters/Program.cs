@@ -18,11 +18,19 @@
 using FourthLabWorkInSeventhChapters;
 
 
-var person1 = new BankAccount(12345678, 500, BankAccountType.Saving);
+var person1 = new BankAccount(5000, BankAccountType.Saving);
 Console.WriteLine(person1);
 person1.ToPutMoney(235);
 Console.WriteLine(person1);
+person1.ToPutMoney(456);
+person1.ToPutMoney(44424);
+person1.WithdrawMoney(23242);
 
-var person2 = new BankAccount(12245678, 1000, BankAccountType.Current);
+
+var person2 = new BankAccount(10000, BankAccountType.Current);
 person2.TransferOfMoney(person1, 1000);
 Console.WriteLine(person2);
+person2.ToPutMoney(55555);
+person1.TransferOfMoney(person2, 32000);
+person1.PrintOperation();
+person2.PrintOperation();
