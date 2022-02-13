@@ -1,4 +1,6 @@
-﻿namespace FourthLabWorkInSeventhChapters
+﻿using FourthLabWorkInSeventhChapters.Transaction;
+
+namespace FourthLabWorkInSeventhChapters
 {
     /*
 Упражнение 7.1 Создать класс счет в банке с закрытыми полями: номер 
@@ -93,7 +95,7 @@ System.Collections.Queue.*/
             if (_balance >= amountOfMony)
             {
                 _balance -= (int)amountOfMony;
-                _transaction.Enqueue(new BankTransaction(amountOfMony, Operation.PaymentWithdraw));
+                _transaction.Enqueue(new WithdrawalsFromAccount(amountOfMony));
                 return true;
             }
             else
@@ -103,7 +105,7 @@ System.Collections.Queue.*/
         public void ToPutMoney(ushort amountOfMony)
         {
             _balance += (int)amountOfMony;
-            _transaction.Enqueue(new BankTransaction(amountOfMony, Operation.TransferToPut));
+            _transaction.Enqueue(new ToPutInAccount(amountOfMony));
         }
 
         public bool TransferOfMoney(BankAccount account, ushort amountOfMony)
@@ -129,13 +131,13 @@ System.Collections.Queue.*/
         private void WithdrawMonyOfTransfer(ushort amountOfMony, int numberAccount)
         {
             _balance -= (int)amountOfMony;
-            _transaction.Enqueue(new BankTransaction(amountOfMony, numberAccount, Operation.TransferWithdraw));
+            _transaction.Enqueue(new PaymentWithdrawBankTransaction(amountOfMony, numberAccount));
         }
 
         private void ToPutMonyOfTransfer(ushort amountOfMony, int numberAccount)
         {
             _balance += (int)amountOfMony;
-            _transaction.Enqueue(new BankTransaction(amountOfMony, numberAccount, Operation.TransferToPut));
+            _transaction.Enqueue(new PaymentToPutBankTransaction(amountOfMony, numberAccount));
         }
 
         public override string ToString()

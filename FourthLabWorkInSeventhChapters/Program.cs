@@ -57,6 +57,6 @@ void PrintOperation(int numberAccount, Queue<BankTransaction> _transaction)
     Console.WriteLine($"\nВыписка по счету {numberAccount}");
     foreach (var operation in _transaction)
     {
-        Console.WriteLine(operation);
+        Console.WriteLine(operation.ToString());
     }
 }
