@@ -18,19 +18,45 @@
 using FourthLabWorkInSeventhChapters;
 
 
-var person1 = new BankAccount(5000, BankAccountType.Saving);
-Console.WriteLine(person1);
-person1.ToPutMoney(235);
-Console.WriteLine(person1);
-person1.ToPutMoney(456);
-person1.ToPutMoney(44424);
-person1.WithdrawMoney(23242);
+Run();
 
 
-var person2 = new BankAccount(10000, BankAccountType.Current);
-person2.TransferOfMoney(person1, 1000);
-Console.WriteLine(person2);
-person2.ToPutMoney(55555);
-person1.TransferOfMoney(person2, 32000);
-person1.PrintOperation();
-person2.PrintOperation();
+void Run()
+{
+    ushort amountOfMony = 0;
+    var person1 = new BankAccount(5000, BankAccountType.Saving);
+    Console.WriteLine(person1);
+    amountOfMony = 235;
+    person1.ToPutMoney(amountOfMony);
+    Console.WriteLine(person1);
+    amountOfMony = 456;
+    person1.ToPutMoney(amountOfMony);
+    amountOfMony = 44424;
+    person1.ToPutMoney(amountOfMony);
+    amountOfMony = 23242;
+    if (person1.WithdrawMoney(amountOfMony) == false)
+        Console.WriteLine("{0} рублей снять/перевести не удалось :", amountOfMony);
+
+
+    var person2 = new BankAccount(10000, BankAccountType.Current);
+    amountOfMony = 1000;
+    if (person2.TransferOfMoney(person1, amountOfMony) == false)
+        Console.WriteLine("{0} рублей для перевода с счета {1} нет", amountOfMony, person2.NumberAccount);
+    Console.WriteLine(person2);
+    amountOfMony = 55555;
+    person2.ToPutMoney(amountOfMony);
+    amountOfMony = 32000;
+    if (person1.TransferOfMoney(person2, amountOfMony) == false)
+        Console.WriteLine("{0} рублей для перевода с счета {1} нет", amountOfMony, person2.NumberAccount);
+    PrintOperation(person1.NumberAccount, person1.Transaction);
+    PrintOperation(person2.NumberAccount, person2.Transaction);
+}
+
+void PrintOperation(int numberAccount, Queue<BankTransaction> _transaction)
+{
+    Console.WriteLine($"\nВыписка по счету {numberAccount}");
+    foreach (var operation in _transaction)
+    {
+        Console.WriteLine(operation);
+    }
+}

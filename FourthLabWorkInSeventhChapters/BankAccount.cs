@@ -54,15 +54,17 @@ System.Collections.Queue.*/
         private readonly BankAccountType _type;
         private Queue<BankTransaction> _transaction;
 
-        private int GenerateNumberAccount() => _number + 1 <= 99999999 ? _number++ : throw new Exception("Номера банковских счетов закончились!");
-
         private string TypeBankAccountUserFriendlyName => _type == BankAccountType.Saving ? "Сберегательный" : "Накопительный";
+
+        public Queue<BankTransaction> Transaction => _transaction;
+        public int NumberAccount => _numberAccount;
 
         public BankAccount(int balanceAcount) : this(balanceAcount, BankAccountType.Saving)
         { }
 
         public BankAccount(BankAccountType type) : this(0, type)
         { }
+
         public BankAccount(int balanceAcount, BankAccountType type)
         {
             if (balanceAcount < 0)
@@ -86,15 +88,16 @@ System.Collections.Queue.*/
             _transaction = new Queue<BankTransaction>();
         }
 
-        public void WithdrawMoney(ushort amountOfMony)
+        public bool WithdrawMoney(ushort amountOfMony)
         {
             if (_balance >= amountOfMony)
             {
                 _balance -= (int)amountOfMony;
                 _transaction.Enqueue(new BankTransaction(amountOfMony, Operation.PaymentWithdraw));
+                return true;
             }
             else
-                Console.WriteLine("{0} рублей снять/перевести не удалось с :", amountOfMony);
+                return false;
         }
 
         public void ToPutMoney(ushort amountOfMony)
@@ -103,27 +106,24 @@ System.Collections.Queue.*/
             _transaction.Enqueue(new BankTransaction(amountOfMony, Operation.TransferToPut));
         }
 
-        public void TransferOfMoney(BankAccount account, ushort amountOfMony)
+        public bool TransferOfMoney(BankAccount account, ushort amountOfMony)
         {
             if (_balance >= amountOfMony)
             {
-                this.WithdrawMonyOfTransfer(amountOfMony, account._numberAccount);
+                WithdrawMonyOfTransfer(amountOfMony, account._numberAccount);
                 account.ToPutMonyOfTransfer(amountOfMony, _numberAccount);
-                Console.WriteLine("Перевод со счета {0} на счет {1}: {2} рублей", _numberAccount, account._numberAccount, amountOfMony);
+                return true;
             }
-            else
-            {
-                Console.WriteLine("{0} рублей для перевода с счета {1} нет", amountOfMony, _numberAccount);
-            }
+            return false;
+
         }
 
-        public void PrintOperation()
+        private int GenerateNumberAccount()
         {
-            Console.WriteLine($"\nВыписка по счету {_numberAccount}");
-            foreach (var operation in _transaction)
-            {
-                Console.WriteLine(operation);
-            }
+            if (_number + 1 <= 99999999)
+                return _number++;
+            else
+                throw new Exception("Номера банковских счетов закончились!");
         }
 
         private void WithdrawMonyOfTransfer(ushort amountOfMony, int numberAccount)
