@@ -59,7 +59,10 @@ System.Collections.Queue.*/
         private string TypeBankAccountUserFriendlyName => _type == BankAccountType.Saving ? "Сберегательный" : "Накопительный";
 
         public Queue<BankTransaction> Transaction => _transaction;
-        public int NumberAccount => _numberAccount;
+
+        public int NumberAccount { get => _numberAccount; }
+
+        public int Balance { get => _balance; }
 
         public BankAccount(int balanceAcount) : this(balanceAcount, BankAccountType.Saving)
         { }
@@ -67,20 +70,14 @@ System.Collections.Queue.*/
         public BankAccount(BankAccountType type) : this(0, type)
         { }
 
-        public BankAccount(int balanceAcount, BankAccountType type)
+        public BankAccount(int balanceAcount, BankAccountType type) : this(GenerateNumberAccount(), balanceAcount, type)
         {
-            if (balanceAcount < 0)
-                throw new Exception("Баланс на счету должен быть отличным от нуля!");
-            _numberAccount = GenerateNumberAccount();
-            _balance = balanceAcount;
-            _type = type;
-            _transaction = new Queue<BankTransaction>();
         }
 
         public BankAccount(int numberAccount, int balanceAcount, BankAccountType type)
         {
 
-            if (numberAccount >= 99999999 && numberAccount <= 10000000)
+            if (numberAccount > 99999999 || numberAccount < 10000000)
                 throw new Exception("Номер счета содержит 8 цифр!");
             if (balanceAcount < 0)
                 throw new Exception("Баланс на счету должен быть отличным от нуля!");
@@ -92,35 +89,30 @@ System.Collections.Queue.*/
 
         public bool WithdrawMoney(ushort amountOfMony)
         {
-            if (_balance >= amountOfMony)
-            {
-                _balance -= (int)amountOfMony;
-                _transaction.Enqueue(new WithdrawalsFromAccount(amountOfMony));
-                return true;
-            }
-            else
+            if (_balance < amountOfMony)
                 return false;
+            _balance -= (int)amountOfMony;
+            _transaction.Enqueue(new WithdrawalsFromAccountTransaction(amountOfMony, _numberAccount));
+            return true;
         }
 
-        public void ToPutMoney(ushort amountOfMony)
+        public void PutMoney(ushort amountOfMony)
         {
             _balance += (int)amountOfMony;
-            _transaction.Enqueue(new ToPutInAccount(amountOfMony));
+            _transaction.Enqueue(new PutInAccountTransaction(amountOfMony, _numberAccount));
         }
 
         public bool TransferOfMoney(BankAccount account, ushort amountOfMony)
         {
-            if (_balance >= amountOfMony)
-            {
-                WithdrawMonyOfTransfer(amountOfMony, account._numberAccount);
-                account.ToPutMonyOfTransfer(amountOfMony, _numberAccount);
-                return true;
-            }
-            return false;
+            if (_balance < amountOfMony)
+                return false;
+            WithdrawMonyOfTransfer(amountOfMony, account._numberAccount);
+            account.ToPutMonyOfTransfer(amountOfMony, account._numberAccount);
+            return true;
 
         }
 
-        private int GenerateNumberAccount()
+        private static int GenerateNumberAccount()
         {
             if (_number + 1 <= 99999999)
                 return _number++;
@@ -131,7 +123,7 @@ System.Collections.Queue.*/
         private void WithdrawMonyOfTransfer(ushort amountOfMony, int numberAccount)
         {
             _balance -= (int)amountOfMony;
-            _transaction.Enqueue(new PaymentWithdrawBankTransaction(amountOfMony, numberAccount));
+            _transaction.Enqueue(new PaymentWithdrawBankTransaction(amountOfMony, _numberAccount, numberAccount));
         }
 
         private void ToPutMonyOfTransfer(ushort amountOfMony, int numberAccount)
@@ -139,6 +131,7 @@ System.Collections.Queue.*/
             _balance += (int)amountOfMony;
             _transaction.Enqueue(new PaymentToPutBankTransaction(amountOfMony, numberAccount));
         }
+
 
         public override string ToString()
         {

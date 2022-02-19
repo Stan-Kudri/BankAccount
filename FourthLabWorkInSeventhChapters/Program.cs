@@ -17,7 +17,6 @@
 
 using FourthLabWorkInSeventhChapters;
 
-
 Run();
 
 
@@ -25,17 +24,18 @@ void Run()
 {
     ushort amountOfMony = 0;
     var person1 = new BankAccount(5000, BankAccountType.Saving);
+    person1.WithdrawMoney(4900);
     Console.WriteLine(person1);
     amountOfMony = 235;
-    person1.ToPutMoney(amountOfMony);
+    person1.PutMoney(amountOfMony);
     Console.WriteLine(person1);
     amountOfMony = 456;
-    person1.ToPutMoney(amountOfMony);
+    person1.PutMoney(amountOfMony);
     amountOfMony = 44424;
-    person1.ToPutMoney(amountOfMony);
+    person1.PutMoney(amountOfMony);
     amountOfMony = 23242;
     if (person1.WithdrawMoney(amountOfMony) == false)
-        Console.WriteLine("{0} рублей снять/перевести не удалось :", amountOfMony);
+        Console.WriteLine("{0} рублей снять не удалось :", amountOfMony);
 
 
     var person2 = new BankAccount(10000, BankAccountType.Current);
@@ -44,12 +44,16 @@ void Run()
         Console.WriteLine("{0} рублей для перевода с счета {1} нет", amountOfMony, person2.NumberAccount);
     Console.WriteLine(person2);
     amountOfMony = 55555;
-    person2.ToPutMoney(amountOfMony);
+    person2.PutMoney(amountOfMony);
     amountOfMony = 32000;
     if (person1.TransferOfMoney(person2, amountOfMony) == false)
         Console.WriteLine("{0} рублей для перевода с счета {1} нет", amountOfMony, person2.NumberAccount);
     PrintOperation(person1.NumberAccount, person1.Transaction);
     PrintOperation(person2.NumberAccount, person2.Transaction);
+
+    Console.WriteLine(person1);
+    Console.WriteLine(person2);
+    Console.WriteLine();
 }
 
 void PrintOperation(int numberAccount, Queue<BankTransaction> _transaction)
@@ -58,5 +62,6 @@ void PrintOperation(int numberAccount, Queue<BankTransaction> _transaction)
     foreach (var operation in _transaction)
     {
         Console.WriteLine(operation.ToString());
+
     }
 }

@@ -2,12 +2,11 @@
 {
     public class PaymentWithdrawBankTransaction : BankTransaction
     {
-        public PaymentWithdrawBankTransaction(int amountOfMony) : base(amountOfMony)
-        {
-        }
+        public readonly int _numberAccountOfTransfer;
 
-        public PaymentWithdrawBankTransaction(int amountOfMony, int numberAccount) : base(amountOfMony, numberAccount)
+        public PaymentWithdrawBankTransaction(int amountOfMony, int numberAccount, int numberAccountOfTransfer) : base(amountOfMony, numberAccount)
         {
+            _numberAccountOfTransfer = numberAccountOfTransfer;
         }
 
         public override string ToString()
