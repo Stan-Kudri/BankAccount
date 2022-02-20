@@ -63,7 +63,9 @@ System.Collections.Queue.*/
 
         public int NumberAccount { get; }
 
-        public int Balance { get; set; }
+        public int Balance { get; private set; }
+
+        public Clock SystemClock;
 
         public BankAccount(int balanceAcount) : this(balanceAcount, BankAccountType.Saving)
         { }
@@ -77,7 +79,6 @@ System.Collections.Queue.*/
 
         public BankAccount(int numberAccount, int balanceAcount, BankAccountType type)
         {
-
             if (numberAccount > MaxNumberBankAccount || numberAccount < MinNumberBankAccount)
                 throw new Exception("Номер счета содержит 8 цифр!");
             if (balanceAcount < 0)
@@ -86,6 +87,7 @@ System.Collections.Queue.*/
             Balance = balanceAcount;
             _type = type;
             _transaction = new Queue<BankTransaction>();
+            SystemClock = new Clock();
         }
 
         public bool WithdrawMoney(ushort amountOfMony)
@@ -93,7 +95,7 @@ System.Collections.Queue.*/
             if (Balance < amountOfMony)
                 return false;
             Balance -= (int)amountOfMony;
-            _transaction.Enqueue(new WithdrawalsFromAccountTransaction(amountOfMony, NumberAccount));
+            _transaction.Enqueue(new WithdrawalsFromAccountTransaction(amountOfMony, NumberAccount, SystemClock.Not));
             return true;
         }
 
@@ -102,7 +104,7 @@ System.Collections.Queue.*/
             if (amountOfMony == 0)
                 return;
             Balance += (int)amountOfMony;
-            _transaction.Enqueue(new PutInAccountTransaction(amountOfMony, NumberAccount));
+            _transaction.Enqueue(new PutInAccountTransaction(amountOfMony, NumberAccount, SystemClock.Not));
         }
 
         public bool TransferOfMoney(BankAccount account, ushort amountOfMony)
@@ -126,13 +128,13 @@ System.Collections.Queue.*/
         private void WithdrawMonyOfTransfer(ushort amountOfMony, int numberAccount)
         {
             Balance -= (int)amountOfMony;
-            _transaction.Enqueue(new PaymentWithdrawBankTransaction(amountOfMony, NumberAccount, numberAccount));
+            _transaction.Enqueue(new PaymentWithdrawBankTransaction(amountOfMony, NumberAccount, SystemClock.Not, numberAccount));
         }
 
         private void ToPutMonyOfTransfer(ushort amountOfMony, int numberAccount)
         {
             Balance += (int)amountOfMony;
-            _transaction.Enqueue(new PaymentToPutBankTransaction(amountOfMony, numberAccount));
+            _transaction.Enqueue(new PaymentToPutBankTransaction(amountOfMony, numberAccount, SystemClock.Not));
         }
 
 
