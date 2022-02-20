@@ -50,9 +50,10 @@ System.Collections.Queue.*/
 
     public class BankAccount
     {
+        private const int MinNumberBankAccount = 10000000;
+        private const int MaxNumberBankAccount = 99999999;
+
         private static int _number = 10000000;
-        private readonly int _numberAccount;
-        private int _balance;
         private readonly BankAccountType _type;
         private Queue<BankTransaction> _transaction;
 
@@ -60,9 +61,9 @@ System.Collections.Queue.*/
 
         public Queue<BankTransaction> Transaction => _transaction;
 
-        public int NumberAccount { get => _numberAccount; }
+        public int NumberAccount { get; }
 
-        public int Balance { get => _balance; }
+        public int Balance { get; set; }
 
         public BankAccount(int balanceAcount) : this(balanceAcount, BankAccountType.Saving)
         { }
@@ -77,44 +78,46 @@ System.Collections.Queue.*/
         public BankAccount(int numberAccount, int balanceAcount, BankAccountType type)
         {
 
-            if (numberAccount > 99999999 || numberAccount < 10000000)
+            if (numberAccount > MaxNumberBankAccount || numberAccount < MinNumberBankAccount)
                 throw new Exception("Номер счета содержит 8 цифр!");
             if (balanceAcount < 0)
                 throw new Exception("Баланс на счету должен быть отличным от нуля!");
-            _numberAccount = numberAccount;
-            _balance = balanceAcount;
+            NumberAccount = numberAccount;
+            Balance = balanceAcount;
             _type = type;
             _transaction = new Queue<BankTransaction>();
         }
 
         public bool WithdrawMoney(ushort amountOfMony)
         {
-            if (_balance < amountOfMony)
+            if (Balance < amountOfMony)
                 return false;
-            _balance -= (int)amountOfMony;
-            _transaction.Enqueue(new WithdrawalsFromAccountTransaction(amountOfMony, _numberAccount));
+            Balance -= (int)amountOfMony;
+            _transaction.Enqueue(new WithdrawalsFromAccountTransaction(amountOfMony, NumberAccount));
             return true;
         }
 
         public void PutMoney(ushort amountOfMony)
         {
-            _balance += (int)amountOfMony;
-            _transaction.Enqueue(new PutInAccountTransaction(amountOfMony, _numberAccount));
+            if (amountOfMony == 0)
+                return;
+            Balance += (int)amountOfMony;
+            _transaction.Enqueue(new PutInAccountTransaction(amountOfMony, NumberAccount));
         }
 
         public bool TransferOfMoney(BankAccount account, ushort amountOfMony)
         {
-            if (_balance < amountOfMony)
+            if (Balance < amountOfMony)
                 return false;
-            WithdrawMonyOfTransfer(amountOfMony, account._numberAccount);
-            account.ToPutMonyOfTransfer(amountOfMony, account._numberAccount);
+            WithdrawMonyOfTransfer(amountOfMony, account.NumberAccount);
+            account.ToPutMonyOfTransfer(amountOfMony, account.NumberAccount);
             return true;
 
         }
 
         private static int GenerateNumberAccount()
         {
-            if (_number + 1 <= 99999999)
+            if (_number + 1 <= MaxNumberBankAccount)
                 return _number++;
             else
                 throw new Exception("Номера банковских счетов закончились!");
@@ -122,20 +125,20 @@ System.Collections.Queue.*/
 
         private void WithdrawMonyOfTransfer(ushort amountOfMony, int numberAccount)
         {
-            _balance -= (int)amountOfMony;
-            _transaction.Enqueue(new PaymentWithdrawBankTransaction(amountOfMony, _numberAccount, numberAccount));
+            Balance -= (int)amountOfMony;
+            _transaction.Enqueue(new PaymentWithdrawBankTransaction(amountOfMony, NumberAccount, numberAccount));
         }
 
         private void ToPutMonyOfTransfer(ushort amountOfMony, int numberAccount)
         {
-            _balance += (int)amountOfMony;
+            Balance += (int)amountOfMony;
             _transaction.Enqueue(new PaymentToPutBankTransaction(amountOfMony, numberAccount));
         }
 
 
         public override string ToString()
         {
-            return string.Format("Номер счета:{0}. Баланс банковского счета {1} руб. Тип банковского счета - {2}", _numberAccount, _balance, TypeBankAccountUserFriendlyName);
+            return string.Format("Номер счета:{0}. Баланс банковского счета {1} руб. Тип банковского счета - {2}", NumberAccount, Balance, TypeBankAccountUserFriendlyName);
         }
     }
 }

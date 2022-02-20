@@ -27,11 +27,9 @@
             return other._numberAccount == _numberAccount && other._amountOfMony == _amountOfMony && other.GetType() == GetType();
         }
 
-        public abstract override string ToString();
-
         public override int GetHashCode()
         {
-            return _amountOfMony.GetHashCode() * _numberAccount.GetHashCode();
+            return _amountOfMony.GetHashCode() + _numberAccount.GetHashCode() + _dateTime.GetHashCode();
         }
     }
 }

@@ -8,17 +8,17 @@ namespace Test
 
     {
         [Theory]
-        [InlineData(1000, 200, 800, true)]
-        [InlineData(1000, 1000, 0, true)]
-        [InlineData(1000, 1200, 1000, false)]
-        public void WithdrawAccountMony(int balance, int amounMony, int accountAmount, bool availabilityOfTransactions)
+        [InlineData(1000, 200, 800)]
+        [InlineData(1000, 1000, 0)]
+        public void WithdrawAccountMony(int balance, int amounMony, int accountAmount)
         {
-            var firstAccountBank = new BankAccount(balance);
-            var transaction = new WithdrawalsFromAccountTransaction(amounMony, firstAccountBank.NumberAccount);
-            Assert.Equal(availabilityOfTransactions, firstAccountBank.WithdrawMoney((ushort)amounMony));
+            var transaction = new WithdrawalsFromAccountTransaction(amounMony, 10000000);
+            var firstAccountBank = new BankAccount(10000000, balance, BankAccountType.Current);
+            firstAccountBank.WithdrawMoney((ushort)amounMony);
+            var bankTransactionAccount = firstAccountBank.Transaction.Peek();
             Assert.Equal(firstAccountBank.Balance, accountAmount);
-            if (availabilityOfTransactions == true)
-                Assert.True(firstAccountBank.Transaction.Peek().Equals(transaction));
+            Assert.True(bankTransactionAccount.Equals(transaction));
+
         }
     }
 }
