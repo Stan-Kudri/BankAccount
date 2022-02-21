@@ -2,13 +2,13 @@
 {
     public class WithdrawalsFromAccountTransaction : BankTransaction
     {
-        public WithdrawalsFromAccountTransaction(int amountOfMony, int numberAccount, DateTime dateTime) : base(amountOfMony, numberAccount, dateTime)
+        public WithdrawalsFromAccountTransaction(int amountOfMoney, int numberAccount, DateTime dateTime) : base(amountOfMoney, numberAccount, dateTime)
         {
         }
 
         public override string ToString()
         {
-            return string.Format($"Списание со счета {_numberAccount} суммы {_amountOfMony}: {DateTime}");
+            return string.Format($"Списание со счета {_numberAccount} суммы {_amountOfMoney}: {_dateTime}");
         }
     }
 }

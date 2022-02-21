@@ -22,32 +22,32 @@ Run();
 
 void Run()
 {
-    ushort amountOfMony = 0;
+    ushort amountOfMoney = 0;
     var person1 = new BankAccount(5000, BankAccountType.Saving);
     person1.WithdrawMoney(4900);
     Console.WriteLine(person1);
-    amountOfMony = 235;
-    person1.PutMoney(amountOfMony);
+    amountOfMoney = 235;
+    person1.PutMoney(amountOfMoney);
     Console.WriteLine(person1);
-    amountOfMony = 456;
-    person1.PutMoney(amountOfMony);
-    amountOfMony = 44424;
-    person1.PutMoney(amountOfMony);
-    amountOfMony = 23242;
-    if (person1.WithdrawMoney(amountOfMony) == false)
-        Console.WriteLine("{0} рублей снять не удалось :", amountOfMony);
+    amountOfMoney = 456;
+    person1.PutMoney(amountOfMoney);
+    amountOfMoney = 44424;
+    person1.PutMoney(amountOfMoney);
+    amountOfMoney = 23242;
+    if (person1.WithdrawMoney(amountOfMoney) == false)
+        Console.WriteLine("{0} рублей снять не удалось :", amountOfMoney);
 
 
     var person2 = new BankAccount(10000, BankAccountType.Current);
-    amountOfMony = 1000;
-    if (person2.TransferOfMoney(person1, amountOfMony) == false)
-        Console.WriteLine("{0} рублей для перевода с счета {1} нет", amountOfMony, person2.NumberAccount);
+    amountOfMoney = 1000;
+    if (person2.TransferOfMoney(person1, amountOfMoney) == false)
+        Console.WriteLine("{0} рублей для перевода с счета {1} нет", amountOfMoney, person2.NumberAccount);
     Console.WriteLine(person2);
-    amountOfMony = 55555;
-    person2.PutMoney(amountOfMony);
-    amountOfMony = 32000;
-    if (person1.TransferOfMoney(person2, amountOfMony) == false)
-        Console.WriteLine("{0} рублей для перевода с счета {1} нет", amountOfMony, person2.NumberAccount);
+    amountOfMoney = 55555;
+    person2.PutMoney(amountOfMoney);
+    amountOfMoney = 32000;
+    if (person1.TransferOfMoney(person2, amountOfMoney) == false)
+        Console.WriteLine("{0} рублей для перевода с счета {1} нет", amountOfMoney, person2.NumberAccount);
     PrintOperation(person1.NumberAccount, person1.Transaction);
     PrintOperation(person2.NumberAccount, person2.Transaction);
 

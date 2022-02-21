@@ -2,6 +2,6 @@
 {
     public interface ISystemClock
     {
-        public DateTime Not { get; set; }
+        DateTime Now { get; }
     }
 }

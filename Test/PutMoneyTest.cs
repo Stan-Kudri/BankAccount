@@ -10,16 +10,21 @@ namespace Test
         [Theory]
         [InlineData(1000, 200, 1200)]
         [InlineData(1000, 500, 1500)]
-        public void PutAccountMony(int balance, ushort amounMony, int accountAmount)
+        public void PutAccountMony(int balance, ushort amounMoney, int accountAmount)
         {
-            var clock = new Clock() { Not = new DateTime(2022, 2, 20) };
-            var transaction = new PutInAccountTransaction(amounMony, 10000000, clock.Not);
-            var firstAccountBank = new BankAccount(10000000, balance, BankAccountType.Saving) { SystemClock = clock };
-            firstAccountBank.PutMoney(amounMony);
+            var clock = new TestClock();
+            var transaction = new PutInAccountTransaction(amounMoney, 10000000, clock.Now);
+            var firstAccountBank = new BankAccount(10000000, balance, BankAccountType.Saving, clock);
+            firstAccountBank.PutMoney(amounMoney);
             Assert.Single(firstAccountBank.Transaction);
             var bankTransactionAccount = firstAccountBank.Transaction.Peek();
             Assert.Equal(firstAccountBank.Balance, accountAmount);
-            Assert.True(bankTransactionAccount.Equals(transaction));
+            Assert.Equal(transaction, bankTransactionAccount);
+        }
+
+        public class TestClock : ISystemClock
+        {
+            public DateTime Now { get; set; } = new DateTime(2022, 2, 20);
         }
     }
 }
