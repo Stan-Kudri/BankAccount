@@ -1,6 +1,5 @@
 ﻿using FourthLabWorkInSeventhChapters;
 using FourthLabWorkInSeventhChapters.Transaction;
-using System;
 using Xunit;
 
 namespace Test
@@ -24,19 +23,18 @@ namespace Test
             firstAccountBank.TransferOfMoney(secondAccountBank, withdrawAmounMoney);
             firstAccountBank.PutMoney(putAmounMoney);
             //Проверка правильности выполнения операций
+            //Проверка баланса
             Assert.Equal(firstAccountBank.Balance, firstAccountBalance);
             Assert.Equal(secondAccountBank.Balance, secondAccountBalance);
+            //Проверка количества прошедших транзакций
             var countTransactionOperationFirstAccount = 2;
             Assert.Equal(countTransactionOperationFirstAccount, firstAccountBank.Transaction.Count);
-            Assert.NotEmpty(secondAccountBank.Transaction);
+            Assert.Single(secondAccountBank.Transaction);
+            //Проверка прошедших транзакций для первого счета
             Assert.Equal(oneTransactionFirstAcount, NextTransaction(firstAccountBank));
-            Assert.Equal(oneTransactionSecondAcount, NextTransaction(secondAccountBank));
             Assert.Equal(twoTransactionFirstAcount, NextTransaction(firstAccountBank));
-        }
-
-        public class TestClock : ISystemClock
-        {
-            public DateTime Now { get; set; } = new DateTime(2022, 2, 20);
+            //Проверка прошедших транзакций для второго счета
+            Assert.Equal(oneTransactionSecondAcount, NextTransaction(secondAccountBank));
         }
 
         private BankTransaction NextTransaction(BankAccount transactions)

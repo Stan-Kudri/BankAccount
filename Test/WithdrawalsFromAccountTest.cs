@@ -1,6 +1,5 @@
 ﻿using FourthLabWorkInSeventhChapters;
 using FourthLabWorkInSeventhChapters.Transaction;
-using System;
 using Xunit;
 
 namespace Test
@@ -21,11 +20,6 @@ namespace Test
             var bankTransactionAccount = firstAccountBank.Transaction.Peek();
             Assert.Equal(firstAccountBank.Balance, accountAmount);
             Assert.Equal(transaction, bankTransactionAccount);
-        }
-
-        public class TestClock : ISystemClock
-        {
-            public DateTime Now { get; set; } = new DateTime(2022, 2, 20);
         }
     }
 }
