@@ -17,6 +17,7 @@
 
 using FourthLabWorkInSeventhChapters;
 
+RunNumberAccount();
 Run();
 
 
@@ -56,6 +57,30 @@ void Run()
     Console.WriteLine();
 }
 
+void RunNumberAccount()
+{
+    var line = "jjj";
+    Console.WriteLine($"Строка :{line}");
+    var account1 = new NumberBankAccount(line);
+    PrintAccountNumber(account1.NumberAccount);
+    line = "23334422";
+    Console.WriteLine($"Строка :{line}");
+    var account2 = new NumberBankAccount(line);
+    PrintAccountNumber(account2.NumberAccount);
+    line = "233344222333 4422";
+    Console.WriteLine($"Строка :{line}");
+    var account3 = new NumberBankAccount(line);
+    PrintAccountNumber(account3.NumberAccount);
+    line = "0333 4422 2333 4422";
+    Console.WriteLine($"Строка :{line}");
+    var account4 = new NumberBankAccount(line);
+    PrintAccountNumber(account4.NumberAccount);
+    line = "233f 4422 2333 4422";
+    Console.WriteLine($"Строка :{line}");
+    var account5 = new NumberBankAccount(line);
+    PrintAccountNumber(account5.NumberAccount);
+}
+
 void PrintOperation(int numberAccount, Queue<BankTransaction> _transaction)
 {
     Console.WriteLine($"\nВыписка по счету {numberAccount}");
@@ -64,4 +89,14 @@ void PrintOperation(int numberAccount, Queue<BankTransaction> _transaction)
         Console.WriteLine(operation.ToString());
 
     }
+}
+
+void PrintAccountNumber(string? str)
+{
+    Console.WriteLine($"Правильный формат строки:{ str != null}");
+    if (str != null)
+    {
+        Console.WriteLine(str);
+    }
+    Console.WriteLine();
 }
