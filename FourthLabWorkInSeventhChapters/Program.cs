@@ -59,15 +59,15 @@ void Run()
 
 void RunNumberAccount()
 {
-    var line = "jjj";
+    /*var line = "jjj";
     Console.WriteLine($"Строка :{line}");
     var account1 = new NumberBankAccount(line);
     PrintAccountNumber(account1.NumberAccount);
     line = "23334422";
     Console.WriteLine($"Строка :{line}");
     var account2 = new NumberBankAccount(line);
-    PrintAccountNumber(account2.NumberAccount);
-    line = "233344222333 4422";
+    PrintAccountNumber(account2.NumberAccount);*/
+    var line = "233344222333 4422";
     Console.WriteLine($"Строка :{line}");
     var account3 = new NumberBankAccount(line);
     PrintAccountNumber(account3.NumberAccount);
