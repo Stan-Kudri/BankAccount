@@ -9,7 +9,7 @@ namespace Test
         [Theory]
         [InlineData(1000, 200, 500, 1300, 1200)]
         [InlineData(1000, 1000, 400, 400, 2000)]
-        public void PaymentAcountTransaction_TrueTransaction_True(int balance, ushort withdrawAmounMoney, ushort putAmounMoney, int firstAccountBalance, int secondAccountBalance)
+        public void Make_payment_transaction_of_bank_account(int balance, ushort withdrawAmounMoney, ushort putAmounMoney, int firstAccountBalance, int secondAccountBalance)
         {
             var clock = new TestClock();
             //Создание операций, которые должны были произойти в картсчете определенной карты.

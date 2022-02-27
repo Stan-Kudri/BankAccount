@@ -9,7 +9,7 @@ namespace Test
         [Theory]
         [InlineData("1000 0002 0323 4242", "10000002    03234242")]
         [InlineData("1000 0002 0323 4642", "1000000203234642")]
-        public void NumberBankAccount_String_True(string? expectNumberAccount, string line)
+        public void Number_bank_account_in_correct_format(string? expectNumberAccount, string line)
         {
             var numberAccount = new NumberBankAccount(line);
             var stringFormat = numberAccount.NumberAccount;
@@ -20,7 +20,7 @@ namespace Test
         [InlineData(typeof(ArgumentNullException), null)]
         [InlineData(typeof(FormatNumberAccountException), "0000 0002 0323 4242")]
         [InlineData(typeof(FormatNumberAccountException), "1000 ff02 0323 4242")]
-        public void ThrowsException_InvalidString_True(Type type, string line)
+        public void Failed_format_in_number_bank_account(Type type, string line)
         {
             Assert.Throws(type, () =>
             {
