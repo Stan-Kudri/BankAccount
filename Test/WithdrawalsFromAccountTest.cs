@@ -10,7 +10,7 @@ namespace Test
         [Theory]
         [InlineData(1000, 200, 800)]
         [InlineData(1000, 1000, 0)]
-        public void WithdrawAccountMony(int balance, ushort amounMoney, int accountAmount)
+        public void WithdrawAccountMony_TrueTransaction_True(int balance, ushort amounMoney, int accountAmount)
         {
             var clock = new TestClock();
             var transaction = new WithdrawalsFromAccountTransaction(amounMoney, 10000000, clock.Now);
