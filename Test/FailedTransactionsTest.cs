@@ -7,7 +7,7 @@ namespace Test
     {
         [Theory]
         [InlineData(1000, 1200, 0, 1000, 1000)]
-        public void Have_failed_of_bank_transaction(int balance, ushort withdrawAmounMoney, ushort putAmounMoney, int firstAccountBalance, int secondAccountBalance)
+        public void No_transaction_after_invalid_operation(int balance, ushort withdrawAmounMoney, ushort putAmounMoney, int firstAccountBalance, int secondAccountBalance)
         {
             //Создание операций, которые должны были произойти в картсчете определенной карты.
             //Создание банковских счетов с определенным балансом из входных данных
