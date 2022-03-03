@@ -71,14 +71,14 @@ void RunNumberAccount()
     Console.WriteLine($"Строка :{line}");
     var account3 = new NumberBankAccount(line);
     PrintAccountNumber(account3.NumberAccount);
-    line = "0333 4422 2333 4422";
+    /*line = "0333 4422 2333 4422";
     Console.WriteLine($"Строка :{line}");
     var account4 = new NumberBankAccount(line);
     PrintAccountNumber(account4.NumberAccount);
     line = "233f 4422 2333 4422";
     Console.WriteLine($"Строка :{line}");
     var account5 = new NumberBankAccount(line);
-    PrintAccountNumber(account5.NumberAccount);
+    PrintAccountNumber(account5.NumberAccount);*/
 }
 
 void PrintOperation(int numberAccount, Queue<BankTransaction> _transaction)

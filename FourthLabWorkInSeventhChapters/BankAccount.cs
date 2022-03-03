@@ -64,7 +64,7 @@ System.Collections.Queue.*/
 
         public int NumberAccount { get; }
 
-        public int Balance { get; private set; }
+        public Money Money { get; private set; }
 
         public BankAccount(int balanceAcount) : this(balanceAcount, BankAccountType.Saving)
         { }
@@ -91,33 +91,35 @@ System.Collections.Queue.*/
             _type = type;
             _transaction = new Queue<BankTransaction>();
             _systemClock = clock;
+            Money = new Money(balanceAcount);
         }
 
-        public bool WithdrawMoney(ushort amountOfMoney)
+        public bool WithdrawMoney(ushort amount)
         {
-            if (Balance < amountOfMoney)
+            var amountMoney = new Money(amount);
+            if (Money.Compare(Money, amountMoney) < 0)
                 return false;
-            Balance -= (int)amountOfMoney;
-            _transaction.Enqueue(new WithdrawalsFromAccountTransaction(amountOfMoney, NumberAccount, _systemClock.Now));
+            Money.Withdraw(amountMoney);
+            _transaction.Enqueue(new WithdrawalsFromAccountTransaction(amountMoney, NumberAccount, _systemClock.Now));
             return true;
         }
 
-        public void PutMoney(ushort amountOfMoney)
+        public void PutMoney(ushort amount)
         {
-            if (amountOfMoney == 0)
-                return;
-            Balance += (int)amountOfMoney;
-            _transaction.Enqueue(new PutInAccountTransaction(amountOfMoney, NumberAccount, _systemClock.Now));
+            var amountMoney = new Money(amount);
+            Money.Put(amountMoney);
+            _transaction.Enqueue(new PutInAccountTransaction(amountMoney, NumberAccount, _systemClock.Now));
         }
 
-        public bool TransferOfMoney(BankAccount account, ushort amountOfMoney)
-        {
-            if (Balance < amountOfMoney)
-                return false;
-            WithdrawMoneyOfTransfer(amountOfMoney, account.NumberAccount);
-            account.ToPutMoneyOfTransfer(amountOfMoney, account.NumberAccount);
-            return true;
 
+        public bool TransferOfMoney(BankAccount account, ushort amount)
+        {
+            var amountMoney = new Money(amount);
+            if (Money.Compare(Money, amountMoney) < 0)
+                return false;
+            WithdrawMoneyOfTransfer(amountMoney, account.NumberAccount);
+            account.ToPutMoneyOfTransfer(amountMoney, account.NumberAccount);
+            return true;
         }
 
         private static int GenerateNumberAccount()
@@ -128,22 +130,22 @@ System.Collections.Queue.*/
                 throw new Exception("Номера банковских счетов закончились!");
         }
 
-        private void WithdrawMoneyOfTransfer(ushort amountOfMoney, int numberAccount)
+        private void WithdrawMoneyOfTransfer(Money amountMoney, int numberAccount)
         {
-            Balance -= (int)amountOfMoney;
-            _transaction.Enqueue(new PaymentWithdrawBankTransaction(amountOfMoney, NumberAccount, _systemClock.Now, numberAccount));
+            Money.Withdraw(amountMoney);
+            _transaction.Enqueue(new PaymentWithdrawBankTransaction(amountMoney, NumberAccount, _systemClock.Now, numberAccount));
         }
 
-        private void ToPutMoneyOfTransfer(ushort amountOfMoney, int numberAccount)
+        private void ToPutMoneyOfTransfer(Money amountMoney, int numberAccount)
         {
-            Balance += (int)amountOfMoney;
-            _transaction.Enqueue(new PaymentToPutBankTransaction(amountOfMoney, numberAccount, _systemClock.Now));
+            Money.Put(amountMoney);
+            _transaction.Enqueue(new PaymentToPutBankTransaction(amountMoney, numberAccount, _systemClock.Now));
         }
 
 
         public override string ToString()
         {
-            return string.Format("Номер счета:{0}. Баланс банковского счета {1} руб. Тип банковского счета - {2}", NumberAccount, Balance, TypeBankAccountUserFriendlyName);
+            return string.Format("Номер счета:{0}. Баланс банковского счета {1} руб. Тип банковского счета - {2}", NumberAccount, Money, TypeBankAccountUserFriendlyName);
         }
     }
 }

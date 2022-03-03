@@ -8,9 +8,9 @@ namespace Test
 
     {
         [Theory]
-        [InlineData(1000, 200, 800)]
+        [InlineData(1000, Money(200), 800)]
         [InlineData(1000, 1000, 0)]
-        public void Withdraw_money_of_bank_account(int balance, ushort amounMoney, int accountAmount)
+        public void Withdraw_money_of_bank_account(int balance, Money amount, int accountAmount)
         {
             var clock = new TestClock();
             var transaction = new WithdrawalsFromAccountTransaction(amounMoney, 10000000, clock.Now);

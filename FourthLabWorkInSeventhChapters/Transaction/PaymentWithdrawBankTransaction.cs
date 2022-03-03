@@ -4,14 +4,14 @@
     {
         public readonly int _numberAccountOfTransfer;
 
-        public PaymentWithdrawBankTransaction(int amountOfMoney, int numberAccount, DateTime dateTime, int numberAccountOfTransfer) : base(amountOfMoney, numberAccount, dateTime)
+        public PaymentWithdrawBankTransaction(Money amount, int numberAccount, DateTime dateTime, int numberAccountOfTransfer) : base(amount, numberAccount, dateTime)
         {
             _numberAccountOfTransfer = numberAccountOfTransfer;
         }
 
         public override string ToString()
         {
-            return string.Format($"Перевод с карты на счет {_numberAccountOfTransfer} {_amountOfMoney} рублей : {_dateTime}");
+            return string.Format($"Перевод с карты на счет {_numberAccountOfTransfer} {_money} рублей : {_dateTime}");
         }
     }
 }

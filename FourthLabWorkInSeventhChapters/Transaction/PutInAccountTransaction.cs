@@ -2,13 +2,13 @@
 {
     public class PutInAccountTransaction : BankTransaction
     {
-        public PutInAccountTransaction(int amountOfMoney, int numberAccount, DateTime dateTime) : base(amountOfMoney, numberAccount, dateTime)
+        public PutInAccountTransaction(Money amount, int numberAccount, DateTime dateTime) : base(amount, numberAccount, dateTime)
         {
         }
 
         public override string ToString()
         {
-            return string.Format($"Пополнение {_numberAccount} счета на сумму {_amountOfMoney}: {_dateTime}");
+            return string.Format($"Пополнение {_numberAccount} счета на сумму {_money}: {_dateTime}");
         }
     }
 }

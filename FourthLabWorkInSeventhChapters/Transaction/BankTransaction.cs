@@ -2,14 +2,14 @@
 {
     public abstract class BankTransaction : IEquatable<BankTransaction>
     {
-        protected readonly int _amountOfMoney;
         protected readonly int _numberAccount;
+        protected readonly Money _money;
 
         protected readonly DateTime _dateTime;
 
-        public BankTransaction(int amountOfMoney, int numberAccount, DateTime dateTime)
+        public BankTransaction(Money amount, int numberAccount, DateTime dateTime)
         {
-            _amountOfMoney = amountOfMoney;
+            _money = amount;
             _dateTime = dateTime;
             _numberAccount = numberAccount;
         }
@@ -25,12 +25,12 @@
         {
             if (other == null)
                 return false;
-            return other._dateTime == _dateTime && other._numberAccount == _numberAccount && other._amountOfMoney == _amountOfMoney && other.GetType() == GetType();
+            return other._dateTime == _dateTime && other._numberAccount == _numberAccount && other._money == _money && other.GetType() == GetType();
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(_amountOfMoney, _dateTime, _numberAccount, GetType());
+            return HashCode.Combine(_money, _dateTime, _numberAccount, GetType());
         }
     }
 }
