@@ -93,7 +93,7 @@ System.Collections.Queue.*/
 
         public bool Withdraw(Money amount)
         {
-            if (Balance.CompareTo(amount) < 0)
+            if (Balance.CompareTo(amount) < 0 || IsZeroValue(amount))
                 return false;
             Balance = Balance.Substruct(amount);
             _transaction.Enqueue(new WithdrawalsFromAccountTransaction(amount, NumberAccount, _systemClock.Now));
@@ -102,19 +102,19 @@ System.Collections.Queue.*/
 
         public void Put(Money amount)
         {
-            if (Balance.CompareTo(amount) == 0)
+            if (Balance.CompareTo(amount) == 0 || IsZeroValue(amount))
                 return;
             Balance = Balance.Sum(amount);
             _transaction.Enqueue(new PutInAccountTransaction(amount, NumberAccount, _systemClock.Now));
         }
 
 
-        public bool TransferOfMoney(BankAccount account, Money amount)
+        public bool TransferTo(BankAccount account, Money amount)
         {
             if (Balance.CompareTo(amount) < 0)
                 return false;
-            WithdrawMoneyOfTransfer(amount, account.NumberAccount);
-            account.ToPutMoneyOfTransfer(amount, account.NumberAccount);
+            WithdrawOfTransfer(amount, account.NumberAccount);
+            account.ToPutOfTransfer(amount, account.NumberAccount);
             return true;
         }
 
@@ -126,18 +126,22 @@ System.Collections.Queue.*/
                 throw new Exception("Номера банковских счетов закончились!");
         }
 
-        private void WithdrawMoneyOfTransfer(Money amountMoney, int numberAccount)
+        private void WithdrawOfTransfer(Money amountMoney, int numberAccount)
         {
             Balance = Balance.Substruct(amountMoney);
             _transaction.Enqueue(new PaymentWithdrawBankTransaction(amountMoney, NumberAccount, _systemClock.Now, numberAccount));
         }
 
-        private void ToPutMoneyOfTransfer(Money amountMoney, int numberAccount)
+        private void ToPutOfTransfer(Money amountMoney, int numberAccount)
         {
             Balance = Balance.Sum(amountMoney);
             _transaction.Enqueue(new PaymentToPutBankTransaction(amountMoney, numberAccount, _systemClock.Now));
         }
 
+        private static bool IsZeroValue(Money amount)
+        {
+            return amount.Equals(new Money(0));
+        }
 
         public override string ToString()
         {

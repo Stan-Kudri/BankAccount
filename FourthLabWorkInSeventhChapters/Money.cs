@@ -18,7 +18,7 @@
 
         public Money Substruct(Money amount)
         {
-            if (_amount < amount._amount)
+            if (CompareTo(amount) < 0)
                 throw new ArgumentException("Для выполнения операции нет денег!");
             return new Money(_amount - amount._amount);
         }
@@ -42,8 +42,6 @@
         {
             if (other == null)
                 return 1;
-            if (other._amount == 0)
-                return 0;
             return _amount - other._amount;
         }
     }

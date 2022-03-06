@@ -21,7 +21,7 @@ namespace Test
             var firstAccountBank = new BankAccount(10000000, balanceAccount, BankAccountType.Current, clock);
             var secondAccountBank = new BankAccount(10000001, balanceAccount, BankAccountType.Current, clock);
             //Выполнение операций с картами.
-            firstAccountBank.TransferOfMoney(secondAccountBank, new Money(withdrawAmounMoney));
+            firstAccountBank.TransferTo(secondAccountBank, new Money(withdrawAmounMoney));
             firstAccountBank.Put(new Money(putAmounMoney));
             //Проверка правильности выполнения операций
             //Проверка баланса
