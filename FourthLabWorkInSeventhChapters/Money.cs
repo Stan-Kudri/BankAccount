@@ -1,50 +1,50 @@
 ﻿namespace FourthLabWorkInSeventhChapters
 {
-    public class Money : IEquatable<Money>, IComparer<Money>
+    public class Money : IEquatable<Money>, IComparable<Money>
     {
-        private readonly int _balance;
+        private readonly int _amount;
 
         public Money(int money)
         {
             if (money < 0)
                 throw new ArgumentOutOfRangeException("Деньги не могут быть отрицательны!");
-            _balance = money;
+            _amount = money;
         }
 
-        public Money Put(Money amount)
+        public Money Sum(Money amount)
         {
-            return new Money(_balance + amount._balance);
+            return new Money(_amount + amount._amount); ;
         }
 
-        public Money Withdraw(Money amount)
+        public Money Substruct(Money amount)
         {
-            if (_balance < amount._balance)
+            if (_amount < amount._amount)
                 throw new ArgumentException("Для выполнения операции нет денег!");
-            return new Money(_balance - amount._balance);
+            return new Money(_amount - amount._amount);
         }
 
         public bool Equals(Money? other)
         {
-            if (other == null)
-                throw new ArgumentNullException("NULL!!!");
-            return other._balance == _balance;
+            return other != null && other._amount == _amount;
         }
 
         public override int GetHashCode()
         {
-            return _balance.GetHashCode();
+            return _amount.GetHashCode();
         }
 
         public override string ToString()
         {
-            return string.Format($"{_balance}");
+            return _amount.ToString();
         }
 
-        public int Compare(Money? x, Money? y)
+        public int CompareTo(Money? other)
         {
-            if (x == null || y == null)
-                throw new ArgumentNullException("NULL!!!");
-            return x._balance - y._balance;
+            if (other == null)
+                return 1;
+            if (other._amount == 0)
+                return 0;
+            return _amount - other._amount;
         }
     }
 }

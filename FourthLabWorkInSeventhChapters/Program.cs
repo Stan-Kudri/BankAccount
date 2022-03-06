@@ -24,30 +24,30 @@ Run();
 void Run()
 {
     ushort amountOfMoney = 0;
-    var person1 = new BankAccount(5000, BankAccountType.Saving);
-    person1.WithdrawMoney(4900);
+    var person1 = new BankAccount(new Money(5000), BankAccountType.Saving);
+    person1.Withdraw(new Money(4900));
     Console.WriteLine(person1);
     amountOfMoney = 235;
-    person1.PutMoney(amountOfMoney);
+    person1.Put(new Money(amountOfMoney));
     Console.WriteLine(person1);
     amountOfMoney = 456;
-    person1.PutMoney(amountOfMoney);
+    person1.Put(new Money(amountOfMoney));
     amountOfMoney = 44424;
-    person1.PutMoney(amountOfMoney);
+    person1.Put(new Money(amountOfMoney));
     amountOfMoney = 23242;
-    if (person1.WithdrawMoney(amountOfMoney) == false)
+    if (person1.Withdraw(new Money(amountOfMoney)) == false)
         Console.WriteLine("{0} рублей снять не удалось :", amountOfMoney);
 
 
-    var person2 = new BankAccount(10000, BankAccountType.Current);
+    var person2 = new BankAccount(new Money(10000), BankAccountType.Current);
     amountOfMoney = 1000;
-    if (person2.TransferOfMoney(person1, amountOfMoney) == false)
+    if (person2.TransferOfMoney(person1, new Money(amountOfMoney)) == false)
         Console.WriteLine("{0} рублей для перевода с счета {1} нет", amountOfMoney, person2.NumberAccount);
     Console.WriteLine(person2);
     amountOfMoney = 55555;
-    person2.PutMoney(amountOfMoney);
+    person2.Put(new Money(amountOfMoney));
     amountOfMoney = 32000;
-    if (person1.TransferOfMoney(person2, amountOfMoney) == false)
+    if (person1.TransferOfMoney(person2, new Money(amountOfMoney)) == false)
         Console.WriteLine("{0} рублей для перевода с счета {1} нет", amountOfMoney, person2.NumberAccount);
     PrintOperation(person1.NumberAccount, person1.Transaction);
     PrintOperation(person2.NumberAccount, person2.Transaction);
