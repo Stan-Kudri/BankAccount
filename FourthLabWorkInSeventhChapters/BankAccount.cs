@@ -94,7 +94,7 @@ System.Collections.Queue.*/
 
         public bool Withdraw(Money amount)
         {
-            if (Balance < amount)
+            if (Balance < amount || IsZero(amount))
                 return false;
 
             Balance -= amount;
@@ -105,7 +105,7 @@ System.Collections.Queue.*/
 
         public void Put(Money amount)
         {
-            if (amount <= new Money(0))
+            if (IsZero(amount))
                 return;
 
             Balance += amount;
@@ -115,7 +115,7 @@ System.Collections.Queue.*/
 
         public bool TransferTo(BankAccount account, Money amount)
         {
-            if (Balance < amount)
+            if (Balance < amount || IsZero(amount))
                 return false;
 
             Balance -= amount;
@@ -136,6 +136,8 @@ System.Collections.Queue.*/
         {
             return string.Format("Номер счета:{0}. Баланс банковского счета {1} руб. Тип банковского счета - {2}", NumberAccount, Balance, TypeBankAccountUserFriendlyName);
         }
+
+        private static bool IsZero(Money amount) => amount <= new Money(0);
 
         private static int GenerateNumberAccount()
         {

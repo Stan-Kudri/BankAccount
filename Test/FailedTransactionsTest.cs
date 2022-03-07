@@ -14,16 +14,19 @@ namespace Test
             //Создание банковских счетов с определенным балансом из входных данных
             var firstAccountBank = new BankAccount(10000000, balanceAcount, BankAccountType.Current);
             var secondAccountBank = new BankAccount(10000001, balanceAcount, BankAccountType.Current);
+            var thirdAccountBank = new BankAccount(10000002, balanceAcount, BankAccountType.Current);
             //Выполнение операций с картами.
             var isFirstOperation = firstAccountBank.TransferTo(secondAccountBank, new Money(withdrawAmounMoney));
             firstAccountBank.Put(new Money(putAmounMoney));
             var isSecondOperation = secondAccountBank.Withdraw(new Money(withdrawAmounMoney));
             secondAccountBank.Put(new Money(putAmounMoney));
+            var isThirdOperation = thirdAccountBank.Withdraw(new Money(0));
             //Проверка правильности выполнения операций
             Assert.Equal(new Money(firstAccountBalance), firstAccountBank.Balance);
             Assert.Equal(new Money(secondAccountBalance), secondAccountBank.Balance);
             Assert.False(isFirstOperation);
             Assert.False(isSecondOperation);
+            Assert.False(isThirdOperation);
             Assert.Empty(firstAccountBank.Transaction);
             Assert.Empty(secondAccountBank.Transaction);
         }

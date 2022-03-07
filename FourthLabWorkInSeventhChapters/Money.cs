@@ -11,28 +11,28 @@
             _amount = money;
         }
 
-        public static Money operator +(Money left, Money right)
+        public static Money operator +(Money? left, Money? right)
         {
             ArgumentNullException.ThrowIfNull(left, nameof(left));
             ArgumentNullException.ThrowIfNull(right, nameof(right));
             return new Money(left._amount + right._amount);
         }
 
-        public static Money operator -(Money left, Money right)
+        public static Money operator -(Money? left, Money? right)
         {
             ArgumentNullException.ThrowIfNull(left, nameof(left));
             ArgumentNullException.ThrowIfNull(right, nameof(right));
             return new Money(left._amount - right._amount);
         }
 
-        public static bool operator >(Money left, Money right)
+        public static bool operator >(Money? left, Money? right)
         {
             if (ReferenceEquals(left, null))
                 return false;
             return left.CompareTo(right) > 0;
         }
 
-        public static bool operator <(Money left, Money right)
+        public static bool operator <(Money? left, Money? right)
         {
             if (ReferenceEquals(right, null))
                 return false;
@@ -49,8 +49,7 @@
 
         public static bool operator !=(Money? left, Money? right)
         {
-            var same = left == right;
-            return !same;
+            return !(left == right);
         }
 
         public static bool operator >=(Money? left, Money? right)
