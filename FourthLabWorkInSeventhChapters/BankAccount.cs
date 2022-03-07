@@ -84,6 +84,7 @@ System.Collections.Queue.*/
         {
             if (numberAccount > MaxNumberBankAccount || numberAccount < MinNumberBankAccount)
                 throw new Exception("Номер счета содержит 8 цифр!");
+
             NumberAccount = numberAccount;
             _type = type;
             _transaction = new Queue<BankTransaction>();
@@ -93,19 +94,22 @@ System.Collections.Queue.*/
 
         public bool Withdraw(Money amount)
         {
-            if (Balance.CompareTo(amount) < 0 || IsZeroValue(amount))
+            if (Balance.CompareTo(amount) < 0 || IsZero(amount))
                 return false;
+
             Balance = Balance.Substruct(amount);
-            _transaction.Enqueue(new WithdrawalsFromAccountTransaction(amount, NumberAccount, _systemClock.Now));
+            AddTransaction(new WithdrawalsFromAccountTransaction(amount, NumberAccount, _systemClock.Now));
+
             return true;
         }
 
         public void Put(Money amount)
         {
-            if (Balance.CompareTo(amount) == 0 || IsZeroValue(amount))
+            if (Balance.CompareTo(amount) == 0 || IsZero(amount))
                 return;
+
             Balance = Balance.Sum(amount);
-            _transaction.Enqueue(new PutInAccountTransaction(amount, NumberAccount, _systemClock.Now));
+            AddTransaction(new PutInAccountTransaction(amount, NumberAccount, _systemClock.Now));
         }
 
 
@@ -113,39 +117,34 @@ System.Collections.Queue.*/
         {
             if (Balance.CompareTo(amount) < 0)
                 return false;
-            WithdrawOfTransfer(amount, account.NumberAccount);
-            account.ToPutOfTransfer(amount, account.NumberAccount);
+
+            Balance = Balance.Substruct(amount);
+            AddTransaction(new PaymentWithdrawBankTransaction(amount, NumberAccount, _systemClock.Now, account.NumberAccount));
+
+            account.Balance = account.Balance.Sum(amount);
+            account.AddTransaction(new PaymentToPutBankTransaction(amount, account.NumberAccount, _systemClock.Now));
+
             return true;
+        }
+
+        private void AddTransaction(BankTransaction transaction)
+        {
+            _transaction.Enqueue(transaction);
+        }
+
+        private static bool IsZero(Money amount) => amount.Equals(new Money(0));
+
+        public override string ToString()
+        {
+            return string.Format("Номер счета:{0}. Баланс банковского счета {1} руб. Тип банковского счета - {2}", NumberAccount, Balance, TypeBankAccountUserFriendlyName);
         }
 
         private static int GenerateNumberAccount()
         {
             if (_number + 1 <= MaxNumberBankAccount)
                 return _number++;
-            else
-                throw new Exception("Номера банковских счетов закончились!");
-        }
 
-        private void WithdrawOfTransfer(Money amountMoney, int numberAccount)
-        {
-            Balance = Balance.Substruct(amountMoney);
-            _transaction.Enqueue(new PaymentWithdrawBankTransaction(amountMoney, NumberAccount, _systemClock.Now, numberAccount));
-        }
-
-        private void ToPutOfTransfer(Money amountMoney, int numberAccount)
-        {
-            Balance = Balance.Sum(amountMoney);
-            _transaction.Enqueue(new PaymentToPutBankTransaction(amountMoney, numberAccount, _systemClock.Now));
-        }
-
-        private static bool IsZeroValue(Money amount)
-        {
-            return amount.Equals(new Money(0));
-        }
-
-        public override string ToString()
-        {
-            return string.Format("Номер счета:{0}. Баланс банковского счета {1} руб. Тип банковского счета - {2}", NumberAccount, Balance, TypeBankAccountUserFriendlyName);
+            throw new Exception("Номера банковских счетов закончились!");
         }
     }
 }
