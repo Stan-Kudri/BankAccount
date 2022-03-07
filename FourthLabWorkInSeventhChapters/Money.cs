@@ -11,21 +11,65 @@
             _amount = money;
         }
 
-        public Money Sum(Money amount)
+        public static Money operator +(Money left, Money right)
         {
-            return new Money(_amount + amount._amount); ;
+            ArgumentNullException.ThrowIfNull(left, nameof(left));
+            ArgumentNullException.ThrowIfNull(right, nameof(right));
+            return new Money(left._amount + right._amount);
         }
 
-        public Money Substruct(Money amount)
+        public static Money operator -(Money left, Money right)
         {
-            if (CompareTo(amount) < 0)
-                throw new ArgumentException("Для выполнения операции нет денег!");
-            return new Money(_amount - amount._amount);
+            ArgumentNullException.ThrowIfNull(left, nameof(left));
+            ArgumentNullException.ThrowIfNull(right, nameof(right));
+            return new Money(left._amount - right._amount);
+        }
+
+        public static bool operator >(Money left, Money right)
+        {
+            if (ReferenceEquals(left, null))
+                return false;
+            return left.CompareTo(right) > 0;
+        }
+
+        public static bool operator <(Money left, Money right)
+        {
+            if (ReferenceEquals(right, null))
+                return false;
+            return right.CompareTo(left) > 0;
+        }
+
+        public static bool operator ==(Money? left, Money? right)
+        {
+            if (object.ReferenceEquals(left, right))
+                return true;
+
+            return left != null && left.Equals(right);
+        }
+
+        public static bool operator !=(Money? left, Money? right)
+        {
+            var same = left == right;
+            return !same;
+        }
+
+        public static bool operator >=(Money? left, Money? right)
+        {
+            if (object.ReferenceEquals(left, null))
+                return object.ReferenceEquals(right, null);
+            return left.CompareTo(right) >= 0;
+        }
+
+        public static bool operator <=(Money? left, Money? right)
+        {
+            if (object.ReferenceEquals(left, null))
+                return object.ReferenceEquals(right, null);
+            return left.CompareTo(right) <= 0;
         }
 
         public bool Equals(Money? other)
         {
-            return other != null && other._amount == _amount;
+            return !ReferenceEquals(other, null) && other._amount == _amount;
         }
 
         public override int GetHashCode()
@@ -40,9 +84,14 @@
 
         public int CompareTo(Money? other)
         {
-            if (other == null)
+            if (ReferenceEquals(other, null))
                 return 1;
             return _amount - other._amount;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return Equals(obj as Money);
         }
     }
 }

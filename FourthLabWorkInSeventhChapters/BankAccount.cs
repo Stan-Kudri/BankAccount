@@ -94,10 +94,10 @@ System.Collections.Queue.*/
 
         public bool Withdraw(Money amount)
         {
-            if (Balance.CompareTo(amount) < 0 || IsZero(amount))
+            if (Balance < amount)
                 return false;
 
-            Balance = Balance.Substruct(amount);
+            Balance -= amount;
             AddTransaction(new WithdrawalsFromAccountTransaction(amount, NumberAccount, _systemClock.Now));
 
             return true;
@@ -105,23 +105,23 @@ System.Collections.Queue.*/
 
         public void Put(Money amount)
         {
-            if (Balance.CompareTo(amount) == 0 || IsZero(amount))
+            if (amount <= new Money(0))
                 return;
 
-            Balance = Balance.Sum(amount);
+            Balance += amount;
             AddTransaction(new PutInAccountTransaction(amount, NumberAccount, _systemClock.Now));
         }
 
 
         public bool TransferTo(BankAccount account, Money amount)
         {
-            if (Balance.CompareTo(amount) < 0)
+            if (Balance < amount)
                 return false;
 
-            Balance = Balance.Substruct(amount);
+            Balance -= amount;
             AddTransaction(new PaymentWithdrawBankTransaction(amount, NumberAccount, _systemClock.Now, account.NumberAccount));
 
-            account.Balance = account.Balance.Sum(amount);
+            account.Balance += amount;
             account.AddTransaction(new PaymentToPutBankTransaction(amount, account.NumberAccount, _systemClock.Now));
 
             return true;
@@ -131,8 +131,6 @@ System.Collections.Queue.*/
         {
             _transaction.Enqueue(transaction);
         }
-
-        private static bool IsZero(Money amount) => amount.Equals(new Money(0));
 
         public override string ToString()
         {
