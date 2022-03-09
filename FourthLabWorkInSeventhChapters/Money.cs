@@ -22,6 +22,10 @@
         {
             ArgumentNullException.ThrowIfNull(left, nameof(left));
             ArgumentNullException.ThrowIfNull(right, nameof(right));
+
+            if (left < right)
+                throw new InvalidOperationException("Значение левой части меньше правой.");
+
             return new Money(left._amount - right._amount);
         }
 

@@ -14,12 +14,20 @@ namespace Test
         {
             var clock = new TestClock();
             var balanceAccount = new Money(balance);
+            //Создание банковских счетов с определенным балансом из входных данных.
+            var firstAccountBank = new BankAccount(10000000, balanceAccount, BankAccountType.Saving, clock);
+            //Выполнение операций с картами.
+            var isFirstOperation = firstAccountBank.Withdraw(new Money(amount));
+
+            //Проверка правильности выполнения операций.
+            //Создание правильной транзакции для сравнения и происходящей транзакции.
             var transaction = new WithdrawalsFromAccountTransaction(new Money(amount), 10000000, clock.Now);
-            var firstAccountBank = new BankAccount(10000000, balanceAccount, BankAccountType.Current, clock);
-            Assert.True(firstAccountBank.Withdraw(new Money(amount)));
-            Assert.Single(firstAccountBank.Transaction);
             var bankTransactionAccount = firstAccountBank.Transaction.Peek();
+            //Проверка значения баланса счета.
             Assert.Equal(new Money(accountAmount), firstAccountBank.Balance);
+            //Проверка выполнения транзакции, если денег для снятия определенного количества денег достаточно.
+            Assert.True(isFirstOperation);
+            //Проверка значения транзакции.
             Assert.Equal(transaction, bankTransactionAccount);
         }
     }

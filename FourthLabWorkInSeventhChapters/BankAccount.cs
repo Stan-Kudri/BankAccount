@@ -103,13 +103,14 @@ System.Collections.Queue.*/
             return true;
         }
 
-        public void Put(Money amount)
+        public bool Put(Money amount)
         {
             if (IsZero(amount))
-                return;
+                return false;
 
             Balance += amount;
             AddTransaction(new PutInAccountTransaction(amount, NumberAccount, _systemClock.Now));
+            return true;
         }
 
 
@@ -137,7 +138,7 @@ System.Collections.Queue.*/
             return string.Format("Номер счета:{0}. Баланс банковского счета {1} руб. Тип банковского счета - {2}", NumberAccount, Balance, TypeBankAccountUserFriendlyName);
         }
 
-        private static bool IsZero(Money amount) => amount <= new Money(0);
+        private static bool IsZero(Money amount) => amount.Equals(new Money(0));
 
         private static int GenerateNumberAccount()
         {
