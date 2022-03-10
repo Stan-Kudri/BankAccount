@@ -14,16 +14,16 @@ namespace Test
             var balanceAccount = new Money(balance);
             var clock = new TestClock();
             //Создание банковских счетов с определенным балансом из входных данных.
-            var firstAccountBank = new BankAccount(10000000, balanceAccount, BankAccountType.Saving, clock);
+            var accountBank = new BankAccount(10000000, balanceAccount, BankAccountType.Saving, clock);
             //Выполнение операций с картами.
-            var isFirstOperation = firstAccountBank.Put(new Money(amount));
+            var isFirstOperation = accountBank.Put(new Money(amount));
 
             //Проверка правильности выполнения операций.
             //Создание правильной транзакции для сравнения и происходящей транзакции.
             var transaction = new PutInAccountTransaction(new Money(amount), 10000000, clock.Now);
-            var bankTransactionAccount = firstAccountBank.Transaction.Peek();
+            var bankTransactionAccount = accountBank.PopLastTransaction();
             //Проверка значения баланса счета.
-            Assert.Equal(new Money(accountAmount), firstAccountBank.Balance);
+            Assert.Equal(new Money(accountAmount), accountBank.Balance);
             //Проверка выполнения транзакции, если денег для снятия определенного количества денег достаточно.
             Assert.True(isFirstOperation);
             //Проверка значения транзакции.

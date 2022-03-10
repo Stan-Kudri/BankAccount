@@ -92,6 +92,11 @@ System.Collections.Queue.*/
             Balance = initBalance;
         }
 
+        public BankTransaction PopLastTransaction()
+        {
+            return _transaction.Dequeue();
+        }
+
         public bool Withdraw(Money amount)
         {
             if (Balance < amount || IsZero(amount))
