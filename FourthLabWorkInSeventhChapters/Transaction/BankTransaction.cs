@@ -25,7 +25,7 @@
         {
             if (other == null)
                 return false;
-            return other._dateTime == _dateTime && other._numberAccount == _numberAccount && other._money == _money && other.GetType() == GetType();
+            return other._dateTime == _dateTime && other._numberAccount == _numberAccount && other._money.Equals(_money) && other.GetType() == GetType();
         }
 
         public override int GetHashCode()

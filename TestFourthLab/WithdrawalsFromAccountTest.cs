@@ -2,7 +2,7 @@
 using FourthLabWorkInSeventhChapters.Transaction;
 using Xunit;
 
-namespace TestProject
+namespace TestFourthLab
 {
     public class WithdrawalsFromAccountTest
     {

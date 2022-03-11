@@ -2,24 +2,24 @@
 using FourthLabWorkInSeventhChapters.Transaction;
 using Xunit;
 
-namespace TestProject
+namespace TestFourthLab
 {
-    public class WithdrawalsFromAccountTest
+    public class PutMoneyTest
     {
         [Theory]
-        [InlineData(1000, 200, 800)]
-        [InlineData(1000, 1000, 0)]
-        public void Withdraw_money_of_bank_account(int balance, ushort amount, int accountAmount)
+        [InlineData(1000, 200, 1200)]
+        [InlineData(1000, 500, 1500)]
+        public void Put_in_money_of_bank_account(int balance, ushort amount, ushort accountAmount)
         {
-            var clock = new TestClock();
             var balanceAccount = new Money(balance);
+            var clock = new TestClock();
             //Создание банковских счетов с определенным балансом из входных данных.
             var accountBank = new BankAccount(10000000, balanceAccount, BankAccountType.Saving, clock);
             //Выполнение операций с картами.
-            var isFirstOperation = accountBank.Withdraw(new Money(amount));
+            var isFirstOperation = accountBank.Put(new Money(amount));
 
             //Создание правильной транзакции для сравнения и происходящей транзакции.
-            var transaction = new WithdrawalsFromAccountTransaction(new Money(amount), 10000000, clock.Now);
+            var transaction = new PutInAccountTransaction(new Money(amount), 10000000, clock.Now);
             var bankTransactionAccount = accountBank.PopLastTransaction();
             //Проверка значения баланса счета.
             Assert.Equal(new Money(accountAmount), accountBank.Balance);
