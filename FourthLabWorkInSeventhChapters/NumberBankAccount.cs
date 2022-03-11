@@ -10,15 +10,14 @@
 
         public NumberBankAccount(string line)
         {
-            if (line == null)
-                throw new ArgumentNullException("Строка нулевая");
-            if (!TryParseNumberAccount(line, out string numberAccount))
-                throw new FormatNumberAccountException("Строка не правильного формата");
-            _numberAccount = numberAccount;
+            _numberAccount = ParseNumberAccount(line);
         }
 
-        private static bool TryParseNumberAccount(string line, out string numberAccount)
+        private static string ParseNumberAccount(string line)
         {
+            if (line == null)
+                throw new ArgumentNullException("Строка нулевая");
+
             var numberDigitBeforeSpace = 0;
             var number = SizeOfNumberAccount;
             var charArray = new char[SizeOfNumberAccount];
@@ -27,8 +26,7 @@
                 var IsFirstElementZero = number == SizeOfNumberAccount && charElement == '0';
                 if (!char.IsNumber(charElement) || IsFirstElementZero || number < 1)
                 {
-                    numberAccount = string.Empty;
-                    return false;
+                    throw new FormatNumberAccountException("Строка не правильного формата");
                 }
                 if (numberDigitBeforeSpace == 4)
                 {
@@ -42,11 +40,9 @@
             }
             if (number != 0)
             {
-                numberAccount = string.Empty;
-                return false;
+                throw new FormatNumberAccountException("Строка не правильного формата");
             }
-            numberAccount = new string(charArray);
-            return true;
+            return new string(charArray);
         }
     }
 }
