@@ -11,8 +11,8 @@ namespace TestFourthLab
         {
             var balanceAcount = new Money(balance);
             //—оздание банковских счетов с определенным балансом из входных данных.
-            var firstAccountBank = new BankAccount(10000000, balanceAcount, BankAccountType.Current);
-            var secondAccountBank = new BankAccount(10000001, balanceAcount, BankAccountType.Current);
+            var firstAccountBank = new BankAccount(new NumberBankAccount("1000 0000 0000 0000"), balanceAcount, BankAccountType.Current);
+            var secondAccountBank = new BankAccount(new NumberBankAccount("1000 0000 0000 0001"), balanceAcount, BankAccountType.Current);
 
             //¬ыполнение операций с картами.
             var isFirstOperation = firstAccountBank.TransferTo(secondAccountBank, new Money(withdrawAmounMoney));
@@ -35,8 +35,8 @@ namespace TestFourthLab
         {
             var balanceAcount = new Money(balance);
             //—оздание банковских счетов с определенным балансом из входных данных.
-            var firstAccountBank = new BankAccount(10000000, balanceAcount, BankAccountType.Current);
-            var secondAccountBank = new BankAccount(10000001, balanceAcount, BankAccountType.Current);
+            var firstAccountBank = new BankAccount(new NumberBankAccount("1000 0000 0000 0000"), balanceAcount, BankAccountType.Current);
+            var secondAccountBank = new BankAccount(new NumberBankAccount("1000 0000 0000 0001"), balanceAcount, BankAccountType.Current);
 
             //¬ыполнение операции по переводу 0 денег на счет.
             var operation = firstAccountBank.TransferTo(secondAccountBank, new Money(0));
@@ -57,7 +57,7 @@ namespace TestFourthLab
         {
             var balanceAcount = new Money(balance);
             //—оздание банковских счетов с определенным балансом из входных данных.
-            var AccountBank = new BankAccount(10000000, balanceAcount, BankAccountType.Current);
+            var AccountBank = new BankAccount(new NumberBankAccount("1000 0000 0000 0000"), balanceAcount, BankAccountType.Current);
 
             //¬ыполнение операции по переводу 0 денег на счет.
             var operation = AccountBank.Put(new Money(0));
@@ -76,7 +76,7 @@ namespace TestFourthLab
         {
             var balanceAcount = new Money(balance);
             //—оздание банковских счетов с определенным балансом из входных данных.
-            var AccountBank = new BankAccount(10000000, balanceAcount, BankAccountType.Current);
+            var AccountBank = new BankAccount(new NumberBankAccount("1000 0000 0000 0000"), balanceAcount, BankAccountType.Current);
 
             //¬ыполнение операции по переводу 0 денег на счет.
             var operation = AccountBank.Withdraw(new Money(0));

@@ -2,7 +2,7 @@
 {
     public class PaymentToPutBankTransaction : BankTransaction
     {
-        public PaymentToPutBankTransaction(Money amount, int numberAccount, DateTime dateTime) : base(amount, numberAccount, dateTime)
+        public PaymentToPutBankTransaction(Money amount, NumberBankAccount numberAccount, DateTime dateTime) : base(amount, numberAccount, dateTime)
         {
         }
 

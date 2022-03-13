@@ -45,7 +45,7 @@
 
         public static bool operator ==(Money? left, Money? right)
         {
-            if (object.ReferenceEquals(left, right))
+            if (ReferenceEquals(left, right))
                 return true;
 
             return left != null && left.Equals(right);
@@ -58,15 +58,15 @@
 
         public static bool operator >=(Money? left, Money? right)
         {
-            if (object.ReferenceEquals(left, null))
-                return object.ReferenceEquals(right, null);
+            if (ReferenceEquals(left, null))
+                return ReferenceEquals(right, null);
             return left.CompareTo(right) >= 0;
         }
 
         public static bool operator <=(Money? left, Money? right)
         {
-            if (object.ReferenceEquals(left, null))
-                return object.ReferenceEquals(right, null);
+            if (ReferenceEquals(left, null))
+                return ReferenceEquals(right, null);
             return left.CompareTo(right) <= 0;
         }
 

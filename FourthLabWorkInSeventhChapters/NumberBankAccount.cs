@@ -1,16 +1,37 @@
-﻿namespace FourthLabWorkInSeventhChapters
+﻿using System.Text;
+
+namespace FourthLabWorkInSeventhChapters
 {
     public class NumberBankAccount
     {
         const int SizeOfNumberAccount = 19;
 
+        private static readonly Random random = new();
+
         private readonly string _numberAccount;
 
         public string NumberAccount => _numberAccount;
 
+        public NumberBankAccount() : this(GenerateNumberAccount())
+        {
+
+        }
+
         public NumberBankAccount(string line)
         {
             _numberAccount = ParseNumberAccount(line);
+        }
+
+        private static string GenerateNumberAccount()
+        {
+            var strBuilder = new StringBuilder();
+            for (var i = 0; i <= 3; i++)
+            {
+                if (i != 0)
+                    strBuilder.Append(' ');
+                strBuilder.Append(random.Next(1000, 9999));
+            }
+            return strBuilder.ToString();
         }
 
         private static string ParseNumberAccount(string line)
@@ -43,6 +64,28 @@
                 throw new FormatNumberAccountException("Строка не правильного формата");
             }
             return new string(charArray);
+        }
+
+        public override string ToString()
+        {
+            return _numberAccount;
+        }
+
+        public bool Equals(NumberBankAccount numberBankAccount)
+        {
+            return numberBankAccount._numberAccount == _numberAccount;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is NumberBankAccount numberBankAccount)
+                return Equals(numberBankAccount);
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return _numberAccount.GetHashCode();
         }
     }
 }

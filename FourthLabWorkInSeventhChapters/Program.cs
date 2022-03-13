@@ -42,15 +42,15 @@ void Run()
     var person2 = new BankAccount(new Money(10000), BankAccountType.Current);
     amountOfMoney = 1000;
     if (person2.TransferTo(person1, new Money(amountOfMoney)) == false)
-        Console.WriteLine("{0} рублей для перевода с счета {1} нет", amountOfMoney, person2.NumberAccount);
+        Console.WriteLine("{0} рублей для перевода с счета {1} нет", amountOfMoney, person2.NumberBankAccount);
     Console.WriteLine(person2);
     amountOfMoney = 55555;
     person2.Put(new Money(amountOfMoney));
     amountOfMoney = 32000;
     if (person1.TransferTo(person2, new Money(amountOfMoney)) == false)
-        Console.WriteLine("{0} рублей для перевода с счета {1} нет", amountOfMoney, person2.NumberAccount);
-    PrintOperation(person1.NumberAccount, person1.Transaction);
-    PrintOperation(person2.NumberAccount, person2.Transaction);
+        Console.WriteLine("{0} рублей для перевода с счета {1} нет", amountOfMoney, person2.NumberBankAccount);
+    PrintOperation(person1.NumberBankAccount, person1.Transaction);
+    PrintOperation(person2.NumberBankAccount, person2.Transaction);
 
     Console.WriteLine(person1);
     Console.WriteLine(person2);
@@ -81,7 +81,7 @@ void RunNumberAccount()
     PrintAccountNumber(account5.NumberAccount);*/
 }
 
-void PrintOperation(int numberAccount, Queue<BankTransaction> _transaction)
+void PrintOperation(NumberBankAccount numberAccount, Queue<BankTransaction> _transaction)
 {
     Console.WriteLine($"\nВыписка по счету {numberAccount}");
     foreach (var operation in _transaction)

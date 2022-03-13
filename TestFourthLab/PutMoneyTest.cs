@@ -14,12 +14,12 @@ namespace TestFourthLab
             var balanceAccount = new Money(balance);
             var clock = new TestClock();
             //Создание банковских счетов с определенным балансом из входных данных.
-            var accountBank = new BankAccount(10000000, balanceAccount, BankAccountType.Saving, clock);
+            var accountBank = new BankAccount(new NumberBankAccount("1000 0000 0000 0000"), balanceAccount, BankAccountType.Saving, clock);
             //Выполнение операций с картами.
             var isFirstOperation = accountBank.Put(new Money(amount));
 
             //Создание правильной транзакции для сравнения и происходящей транзакции.
-            var transaction = new PutInAccountTransaction(new Money(amount), 10000000, clock.Now);
+            var transaction = new PutInAccountTransaction(new Money(amount), new NumberBankAccount("1000 0000 0000 0000"), clock.Now);
             var bankTransactionAccount = accountBank.PopLastTransaction();
             //Проверка значения баланса счета.
             Assert.Equal(new Money(accountAmount), accountBank.Balance);

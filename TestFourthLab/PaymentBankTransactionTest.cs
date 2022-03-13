@@ -14,17 +14,17 @@ namespace TestFourthLab
             var clock = new TestClock();
             var balanceAccount = new Money(balance);
             //Создание операций, которые должны были произойти в картсчете определенной карты.
-            var firstTransactionBankAcount = new WithdrawalsFromAccountTransaction(new Money(amountMoney), 10000000, clock.Now);
-            var secondTransactionBankAcount = new PutInAccountTransaction(new Money(amountMoney), 10000000, clock.Now);
+            var firstTransactionBankAcount = new WithdrawalsFromAccountTransaction(new Money(amountMoney), new NumberBankAccount("1000 0000 0000 0000"), clock.Now);
+            var secondTransactionBankAcount = new PutInAccountTransaction(new Money(amountMoney), new NumberBankAccount("1000 0000 0000 0000"), clock.Now);
             //Создание банковского счета с определенным балансом из входных данных.
-            var AccountBank = new BankAccount(10000000, balanceAccount, BankAccountType.Current, clock);
+            var AccountBank = new BankAccount(new NumberBankAccount("1000 0000 0000 0000"), balanceAccount, BankAccountType.Current, clock);
             //Выполнение операций с картой.
             AccountBank.Withdraw(new Money(amountMoney));
             AccountBank.Put(new Money(amountMoney));
 
             //Проверка баланса.
             Assert.Equal(new Money(balance), AccountBank.Balance);
-            //Проверка количества прошедших транзакций.
+            //Проверка количества прошедших транзакций (2 транзакции = снятие денег со счета + пополнение счета деньгами).
             var countTransactionOperationFirstAccount = 2;
             Assert.Equal(countTransactionOperationFirstAccount, AccountBank.Transaction.Count);
             //Проверка прошедших транзакций для банковского счета.
@@ -40,11 +40,11 @@ namespace TestFourthLab
             var clock = new TestClock();
             var balanceAccount = new Money(balance);
             //Создание операций, которые должны были произойти в картсчете определенной карты.
-            var transactionFirstAcount = new PaymentWithdrawBankTransaction(new Money(transferAmounMoney), 10000000, clock.Now, 10000001);
-            var transactionSecondAcount = new PaymentToPutBankTransaction(new Money(transferAmounMoney), 10000001, clock.Now);
+            var transactionFirstAcount = new PaymentWithdrawBankTransaction(new Money(transferAmounMoney), new NumberBankAccount("1000 0000 0000 0000"), clock.Now, new NumberBankAccount("1000 0000 0000 0001"));
+            var transactionSecondAcount = new PaymentToPutBankTransaction(new Money(transferAmounMoney), new NumberBankAccount("1000 0000 0000 0001"), clock.Now);
             //Создание банковских счетов с определенным балансом из входных данных.
-            var firstAccountBank = new BankAccount(10000000, balanceAccount, BankAccountType.Current, clock);
-            var secondAccountBank = new BankAccount(10000001, balanceAccount, BankAccountType.Current, clock);
+            var firstAccountBank = new BankAccount(new NumberBankAccount("1000 0000 0000 0000"), balanceAccount, BankAccountType.Current, clock);
+            var secondAccountBank = new BankAccount(new NumberBankAccount("1000 0000 0000 0001"), balanceAccount, BankAccountType.Current, clock);
             //Выполнение перевода денег с счета на счет.
             firstAccountBank.TransferTo(secondAccountBank, new Money(transferAmounMoney));
 

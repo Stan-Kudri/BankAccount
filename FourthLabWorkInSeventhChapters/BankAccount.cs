@@ -50,11 +50,9 @@ System.Collections.Queue.*/
 
     public class BankAccount
     {
-        private const int MinNumberBankAccount = 10000000;
-        private const int MaxNumberBankAccount = 99999999;
-
         private static readonly Money _zeroMoney = new(0);
-        private static int _number = 10000000;
+
+        private readonly NumberBankAccount _numberAccount;
         private readonly BankAccountType _type;
         private Queue<BankTransaction> _transaction;
         private ISystemClock _systemClock;
@@ -63,9 +61,9 @@ System.Collections.Queue.*/
 
         public Queue<BankTransaction> Transaction => _transaction;
 
-        public int NumberAccount { get; }
-
         public Money Balance { get; private set; }
+
+        public NumberBankAccount NumberBankAccount => _numberAccount;
 
         public BankAccount(Money initBalance) : this(initBalance, BankAccountType.Saving)
         { }
@@ -73,20 +71,17 @@ System.Collections.Queue.*/
         public BankAccount(BankAccountType type) : this(new Money(0), type)
         { }
 
-        public BankAccount(Money initBalance, BankAccountType type) : this(GenerateNumberAccount(), initBalance, type)
+        public BankAccount(Money initBalance, BankAccountType type) : this(new NumberBankAccount(), initBalance, type)
         {
         }
 
-        public BankAccount(int numberAccount, Money initBalance, BankAccountType type) : this(numberAccount, initBalance, type, new SystemClock())
+        public BankAccount(NumberBankAccount numberAccount, Money initBalance, BankAccountType type) : this(numberAccount, initBalance, type, new SystemClock())
         {
         }
 
-        public BankAccount(int numberAccount, Money initBalance, BankAccountType type, ISystemClock clock)
+        public BankAccount(NumberBankAccount numberAccount, Money initBalance, BankAccountType type, ISystemClock clock)
         {
-            if (numberAccount > MaxNumberBankAccount || numberAccount < MinNumberBankAccount)
-                throw new Exception("Номер счета содержит 8 цифр!");
-
-            NumberAccount = numberAccount;
+            _numberAccount = numberAccount;
             _type = type;
             _transaction = new Queue<BankTransaction>();
             _systemClock = clock;
@@ -104,7 +99,7 @@ System.Collections.Queue.*/
                 return false;
 
             Balance -= amount;
-            AddTransaction(new WithdrawalsFromAccountTransaction(amount, NumberAccount, _systemClock.Now));
+            AddTransaction(new WithdrawalsFromAccountTransaction(amount, _numberAccount, _systemClock.Now));
 
             return true;
         }
@@ -115,7 +110,7 @@ System.Collections.Queue.*/
                 return false;
 
             Balance += amount;
-            AddTransaction(new PutInAccountTransaction(amount, NumberAccount, _systemClock.Now));
+            AddTransaction(new PutInAccountTransaction(amount, _numberAccount, _systemClock.Now));
             return true;
         }
 
@@ -126,10 +121,10 @@ System.Collections.Queue.*/
                 return false;
 
             Balance -= amount;
-            AddTransaction(new PaymentWithdrawBankTransaction(amount, NumberAccount, _systemClock.Now, account.NumberAccount));
+            AddTransaction(new PaymentWithdrawBankTransaction(amount, _numberAccount, _systemClock.Now, account._numberAccount));
 
             account.Balance += amount;
-            account.AddTransaction(new PaymentToPutBankTransaction(amount, account.NumberAccount, _systemClock.Now));
+            account.AddTransaction(new PaymentToPutBankTransaction(amount, account._numberAccount, _systemClock.Now));
 
             return true;
         }
@@ -141,17 +136,9 @@ System.Collections.Queue.*/
 
         public override string ToString()
         {
-            return string.Format("Номер счета:{0}. Баланс банковского счета {1} руб. Тип банковского счета - {2}", NumberAccount, Balance, TypeBankAccountUserFriendlyName);
+            return string.Format("Номер счета:{0}. Баланс банковского счета {1} руб. Тип банковского счета - {2}", _numberAccount, Balance, TypeBankAccountUserFriendlyName);
         }
 
         private static bool IsZero(Money amount) => amount.Equals(_zeroMoney);
-
-        private static int GenerateNumberAccount()
-        {
-            if (_number + 1 <= MaxNumberBankAccount)
-                return _number++;
-
-            throw new Exception("Номера банковских счетов закончились!");
-        }
     }
 }
