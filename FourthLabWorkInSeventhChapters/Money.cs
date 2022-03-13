@@ -2,6 +2,8 @@
 {
     public class Money : IEquatable<Money>, IComparable<Money>
     {
+        private static readonly Money _zeroMoney = new(0);
+
         private readonly int _amount;
 
         public Money(int money)
@@ -48,7 +50,7 @@
             if (ReferenceEquals(left, right))
                 return true;
 
-            return left != null && left.Equals(right);
+            return !ReferenceEquals(left, null) && left.Equals(right);
         }
 
         public static bool operator !=(Money? left, Money? right)

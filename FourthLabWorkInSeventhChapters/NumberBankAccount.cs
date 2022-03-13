@@ -12,9 +12,9 @@ namespace FourthLabWorkInSeventhChapters
 
         public string NumberAccount => _numberAccount;
 
-        public NumberBankAccount()
+        public NumberBankAccount() : this(GenerateNumberAccount())
         {
-            _numberAccount = GenerateNumberAccount();
+
         }
 
         public NumberBankAccount(string line)
@@ -66,13 +66,20 @@ namespace FourthLabWorkInSeventhChapters
             return new string(charArray);
         }
 
-        public override string ToString()
+        public static bool operator ==(NumberBankAccount left, NumberBankAccount right)
         {
-            return _numberAccount;
+            return !ReferenceEquals(left, null) && left.Equals(right);
         }
 
-        public bool Equals(NumberBankAccount numberBankAccount)
+        public static bool operator !=(NumberBankAccount left, NumberBankAccount right)
         {
+            return left != right;
+        }
+
+        public bool Equals(NumberBankAccount? numberBankAccount)
+        {
+            if (ReferenceEquals(numberBankAccount, null))
+                return false;
             return numberBankAccount._numberAccount == _numberAccount;
         }
 
@@ -82,6 +89,12 @@ namespace FourthLabWorkInSeventhChapters
                 return Equals(numberBankAccount);
             return false;
         }
+
+        public override string ToString()
+        {
+            return _numberAccount;
+        }
+
 
         public override int GetHashCode()
         {
