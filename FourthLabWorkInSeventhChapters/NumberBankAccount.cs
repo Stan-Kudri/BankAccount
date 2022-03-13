@@ -12,9 +12,9 @@ namespace FourthLabWorkInSeventhChapters
 
         public string NumberAccount => _numberAccount;
 
-        public NumberBankAccount() : this(GenerateNumberAccount())
+        public NumberBankAccount()
         {
-
+            _numberAccount = GenerateNumberAccount();
         }
 
         public NumberBankAccount(string line)

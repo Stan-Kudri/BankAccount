@@ -1,5 +1,6 @@
 ﻿using FourthLabWorkInSeventhChapters;
 using System;
+using System.Linq;
 using Xunit;
 
 namespace TestFourthLab
@@ -26,6 +27,17 @@ namespace TestFourthLab
             {
                 new NumberBankAccount(line);
             });
+        }
+
+        [Theory]
+        [InlineData("#### #### #### ####")]
+        public void Number_bank_account_make_correct_format(string format)
+        {
+            var numberBankAccount = new NumberBankAccount();
+            var charNumberAccount = numberBankAccount.NumberAccount;
+            var formatNumberAccount = new string(charNumberAccount.Select(x => char.IsDigit(x) ? '#' : x).ToArray());
+            //Проверка правильного формата номера счета.
+            Assert.Equal(format, formatNumberAccount);
         }
     }
 }
