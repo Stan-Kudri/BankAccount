@@ -50,8 +50,6 @@ System.Collections.Queue.*/
 
     public class BankAccount
     {
-        private static readonly Money _zeroMoney = new(0);
-
         private readonly NumberBankAccount _numberAccount;
         private readonly BankAccountType _type;
         private Queue<BankTransaction> _transaction;
@@ -139,6 +137,6 @@ System.Collections.Queue.*/
             return string.Format("Номер счета:{0}. Баланс банковского счета {1} руб. Тип банковского счета - {2}", _numberAccount, Balance, TypeBankAccountUserFriendlyName);
         }
 
-        private static bool IsZero(Money amount) => amount.Equals(_zeroMoney);
+        private static bool IsZero(Money amount) => amount.Equals(Money._zeroMoney);
     }
 }

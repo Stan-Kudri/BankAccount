@@ -2,9 +2,9 @@
 {
     public class Money : IEquatable<Money>, IComparable<Money>
     {
-        private static readonly Money _zeroMoney = new(0);
-
         private readonly int _amount;
+
+        public static Money _zeroMoney => new(0);
 
         public Money(int money)
         {
