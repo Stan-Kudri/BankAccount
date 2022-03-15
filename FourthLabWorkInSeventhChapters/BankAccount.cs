@@ -54,6 +54,7 @@ System.Collections.Queue.*/
         private readonly BankAccountType _type;
         private Queue<BankTransaction> _transaction;
         private ISystemClock _systemClock;
+        public static Money ZeroMoney => new(0);
 
         private string TypeBankAccountUserFriendlyName => _type == BankAccountType.Saving ? "Сберегательный" : "Накопительный";
 
@@ -93,7 +94,7 @@ System.Collections.Queue.*/
 
         public bool Withdraw(Money amount)
         {
-            if (Balance < amount || IsZero(amount))
+            if (Balance < amount || amount.IsZero)
                 return false;
 
             Balance -= amount;
@@ -104,7 +105,7 @@ System.Collections.Queue.*/
 
         public bool Put(Money amount)
         {
-            if (IsZero(amount))
+            if (amount.IsZero)
                 return false;
 
             Balance += amount;
@@ -115,7 +116,7 @@ System.Collections.Queue.*/
 
         public bool TransferTo(BankAccount account, Money amount)
         {
-            if (Balance < amount || IsZero(amount))
+            if (Balance < amount || amount.IsZero)
                 return false;
 
             Balance -= amount;
@@ -136,7 +137,5 @@ System.Collections.Queue.*/
         {
             return string.Format("Номер счета:{0}. Баланс банковского счета {1} руб. Тип банковского счета - {2}", _numberAccount, Balance, TypeBankAccountUserFriendlyName);
         }
-
-        private static bool IsZero(Money amount) => amount.Equals(Money._zeroMoney);
     }
 }

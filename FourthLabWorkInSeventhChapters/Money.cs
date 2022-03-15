@@ -4,7 +4,7 @@
     {
         private readonly int _amount;
 
-        public static Money _zeroMoney => new(0);
+        public bool IsZero => _amount == 0;
 
         public Money(int money)
         {
