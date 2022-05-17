@@ -1,4 +1,4 @@
-﻿using FourthLabWorkInSeventhChapters;
+﻿using Bank.Domain;
 using Xunit;
 
 namespace Test
@@ -9,12 +9,13 @@ namespace Test
         [InlineData(1000, 1200)]
         public void Transfer_more_money_than_available(int balance, ushort withdrawAmounMoney)
         {
+            var bankFactory = new BankAccountObjectFactory();
             var balanceAcount = new Money(balance);
             //Создание операций, которые должны были произойти в картсчете определенной карты.
 
             //Создание банковских счетов с определенным балансом из входных данных.
-            var firstAccountBank = new BankAccount(10000000, balanceAcount, BankAccountType.Current);
-            var secondAccountBank = new BankAccount(10000001, balanceAcount, BankAccountType.Current);
+            var firstAccountBank = bankFactory.CreateAccount(10000000, balanceAcount, BankAccountType.Current);
+            var secondAccountBank = bankFactory.CreateAccount(10000001, balanceAcount, BankAccountType.Current);
 
             //Выполнение операций с картами.
             var isFirstOperation = firstAccountBank.TransferTo(secondAccountBank, new Money(withdrawAmounMoney));
@@ -36,12 +37,13 @@ namespace Test
         [InlineData(1000)]
         public void Transfer_zero_money_impossible(int balance)
         {
+            var bankFactory = new BankAccountObjectFactory();
             var balanceAcount = new Money(balance);
             //Создание операций, которые должны были произойти в картсчете определенной карты.
 
             //Создание банковских счетов с определенным балансом из входных данных.
-            var firstAccountBank = new BankAccount(10000000, balanceAcount, BankAccountType.Current);
-            var secondAccountBank = new BankAccount(10000001, balanceAcount, BankAccountType.Current);
+            var firstAccountBank = bankFactory.CreateAccount(10000000, balanceAcount, BankAccountType.Current);
+            var secondAccountBank = bankFactory.CreateAccount(10000001, balanceAcount, BankAccountType.Current);
 
             //Выполнение операции по переводу 0 денег на счет.
             var operation = firstAccountBank.TransferTo(secondAccountBank, new Money(0));
@@ -61,11 +63,12 @@ namespace Test
         [InlineData(1000)]
         public void Put_zero_money_impossible(int balance)
         {
+            var bankFactory = new BankAccountObjectFactory();
             var balanceAcount = new Money(balance);
             //Создание операций, которые должны были произойти в картсчете определенной карты.
 
             //Создание банковских счетов с определенным балансом из входных данных.
-            var AccountBank = new BankAccount(10000000, balanceAcount, BankAccountType.Current);
+            var AccountBank = bankFactory.CreateAccount(10000000, balanceAcount, BankAccountType.Current);
 
             //Выполнение операции по переводу 0 денег на счет.
             var operation = AccountBank.Put(new Money(0));
@@ -83,11 +86,12 @@ namespace Test
         [InlineData(1000)]
         public void Withdrawals_zero_money_impossible(int balance)
         {
+            var bankFactory = new BankAccountObjectFactory();
             var balanceAcount = new Money(balance);
             //Создание операций, которые должны были произойти в картсчете определенной карты.
 
             //Создание банковских счетов с определенным балансом из входных данных.
-            var AccountBank = new BankAccount(10000000, balanceAcount, BankAccountType.Current);
+            var AccountBank = bankFactory.CreateAccount(10000000, balanceAcount, BankAccountType.Current);
 
             //Выполнение операции по переводу 0 денег на счет.
             var operation = AccountBank.Withdraw(new Money(0));

@@ -1,5 +1,5 @@
-﻿using FourthLabWorkInSeventhChapters;
-using FourthLabWorkInSeventhChapters.Transaction;
+﻿using Bank.Domain;
+using Bank.Domain.Transaction;
 using Xunit;
 
 namespace Test
@@ -14,8 +14,10 @@ namespace Test
         {
             var clock = new TestClock();
             var balanceAccount = new Money(balance);
+            var bankFactory = new BankAccountObjectFactory();
             //Создание банковских счетов с определенным балансом из входных данных.
-            var accountBank = new BankAccount(10000000, balanceAccount, BankAccountType.Saving, clock);
+            var accountBank = bankFactory.CreateAccount(10000000, balanceAccount, BankAccountType.Saving, clock);
+
             //Выполнение операций с картами.
             var isFirstOperation = accountBank.Withdraw(new Money(amount));
 

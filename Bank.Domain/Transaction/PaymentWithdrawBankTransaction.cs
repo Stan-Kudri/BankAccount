@@ -1,4 +1,4 @@
-﻿namespace FourthLabWorkInSeventhChapters.Transaction
+﻿namespace Bank.Domain.Transaction
 {
     public class PaymentWithdrawBankTransaction : BankTransaction
     {

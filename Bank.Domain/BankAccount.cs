@@ -1,6 +1,6 @@
-﻿using FourthLabWorkInSeventhChapters.Transaction;
+﻿using Bank.Domain.Transaction;
 
-namespace FourthLabWorkInSeventhChapters
+namespace Bank.Domain
 {
     /*
 Упражнение 7.1 Создать класс счет в банке с закрытыми полями: номер 
@@ -53,7 +53,6 @@ System.Collections.Queue.*/
         private const int MinNumberBankAccount = 10000000;
         private const int MaxNumberBankAccount = 99999999;
 
-        private static readonly Money _zeroMoney = new(0);
         private static int _number = 10000000;
         private readonly BankAccountType _type;
         private Queue<BankTransaction> _transaction;
@@ -67,21 +66,21 @@ System.Collections.Queue.*/
 
         public Money Balance { get; private set; }
 
-        public BankAccount(Money initBalance) : this(initBalance, BankAccountType.Saving)
+        internal BankAccount(Money initBalance) : this(initBalance, BankAccountType.Saving)
         { }
 
-        public BankAccount(BankAccountType type) : this(new Money(0), type)
+        internal BankAccount(BankAccountType type) : this(new Money(0), type)
         { }
 
-        public BankAccount(Money initBalance, BankAccountType type) : this(GenerateNumberAccount(), initBalance, type)
+        internal BankAccount(Money initBalance, BankAccountType type) : this(GenerateNumberAccount(), initBalance, type)
         {
         }
 
-        public BankAccount(int numberAccount, Money initBalance, BankAccountType type) : this(numberAccount, initBalance, type, new SystemClock())
+        internal BankAccount(int numberAccount, Money initBalance, BankAccountType type) : this(numberAccount, initBalance, type, new SystemClock())
         {
         }
 
-        public BankAccount(int numberAccount, Money initBalance, BankAccountType type, ISystemClock clock)
+        internal BankAccount(int numberAccount, Money initBalance, BankAccountType type, ISystemClock clock)
         {
             if (numberAccount > MaxNumberBankAccount || numberAccount < MinNumberBankAccount)
                 throw new Exception("Номер счета содержит 8 цифр!");
@@ -144,7 +143,7 @@ System.Collections.Queue.*/
             return string.Format("Номер счета:{0}. Баланс банковского счета {1} руб. Тип банковского счета - {2}", NumberAccount, Balance, TypeBankAccountUserFriendlyName);
         }
 
-        private static bool IsZero(Money amount) => amount.Equals(_zeroMoney);
+        private static bool IsZero(Money amount) => amount.Equals(new Money(0));
 
         private static int GenerateNumberAccount()
         {

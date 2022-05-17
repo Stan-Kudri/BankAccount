@@ -1,4 +1,4 @@
-﻿namespace FourthLabWorkInSeventhChapters
+﻿namespace Bank.Domain
 {
     public abstract class BankTransaction : IEquatable<BankTransaction>
     {

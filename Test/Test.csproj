@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FourthLabWorkInSeventhChapters\FourthLabWorkInSeventhChapters.csproj" />
+    <ProjectReference Include="..\Bank.Domain\Bank.Domain.csproj" />
   </ItemGroup>
 
 </Project>

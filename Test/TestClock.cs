@@ -1,4 +1,4 @@
-﻿using FourthLabWorkInSeventhChapters;
+﻿using Bank.Domain;
 using System;
 
 namespace Test

@@ -1,4 +1,4 @@
-﻿namespace FourthLabWorkInSeventhChapters
+﻿namespace Bank.Domain
 {
     public class Money : IEquatable<Money>, IComparable<Money>
     {

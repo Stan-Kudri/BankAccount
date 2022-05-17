@@ -1,5 +1,5 @@
-﻿using FourthLabWorkInSeventhChapters;
-using FourthLabWorkInSeventhChapters.Transaction;
+﻿using Bank.Domain;
+using Bank.Domain.Transaction;
 using Xunit;
 
 namespace Test
@@ -13,11 +13,14 @@ namespace Test
         {
             var clock = new TestClock();
             var balanceAccount = new Money(balance);
+            var bankFactory = new BankAccountObjectFactory();
+
             //Создание операций, которые должны были произойти в картсчете определенной карты.
             var firstTransactionBankAcount = new WithdrawalsFromAccountTransaction(new Money(amountMoney), 10000000, clock.Now);
             var secondTransactionBankAcount = new PutInAccountTransaction(new Money(amountMoney), 10000000, clock.Now);
+
             //Создание банковского счета с определенным балансом из входных данных.
-            var AccountBank = new BankAccount(10000000, balanceAccount, BankAccountType.Current, clock);
+            var AccountBank = bankFactory.CreateAccount(10000000, balanceAccount, BankAccountType.Current, clock);
             //Выполнение операций с картой.
             AccountBank.Put(new Money(amountMoney));
             AccountBank.Withdraw(new Money(amountMoney));
@@ -40,12 +43,16 @@ namespace Test
         {
             var clock = new TestClock();
             var balanceAccount = new Money(balance);
+            var bankFactory = new BankAccountObjectFactory();
+
             //Создание операций, которые должны были произойти в картсчете определенной карты.
             var transactionFirstAcount = new PaymentWithdrawBankTransaction(new Money(transferAmounMoney), 10000000, clock.Now, 10000001);
             var transactionSecondAcount = new PaymentToPutBankTransaction(new Money(transferAmounMoney), 10000001, clock.Now);
+
             //Создание банковских счетов с определенным балансом из входных данных.
-            var firstAccountBank = new BankAccount(10000000, balanceAccount, BankAccountType.Current, clock);
-            var secondAccountBank = new BankAccount(10000001, balanceAccount, BankAccountType.Current, clock);
+            var firstAccountBank = bankFactory.CreateAccount(10000000, balanceAccount, BankAccountType.Current, clock);
+            var secondAccountBank = bankFactory.CreateAccount(10000001, balanceAccount, BankAccountType.Current, clock);
+
             //Выполнение перевода денег с счета на счет.
             firstAccountBank.TransferTo(secondAccountBank, new Money(transferAmounMoney));
 

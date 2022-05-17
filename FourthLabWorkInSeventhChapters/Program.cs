@@ -14,46 +14,47 @@
 и положить на счет. Метод снять со счета проверяет, возможно ли снять 
 запрашиваемую сумму, и в случае положительного результата изменяет баланс. 
 */
-
-using FourthLabWorkInSeventhChapters;
+using Bank.Domain;
 
 RunNumberAccount();
-Run();
+
+var bankFactory = new BankAccountObjectFactory();
+Run2(bankFactory);
 
 
-void Run()
+void Run2(BankAccountObjectFactory bankFactory)
 {
     ushort amountOfMoney = 0;
-    var person1 = new BankAccount(new Money(5000), BankAccountType.Saving);
-    person1.Withdraw(new Money(4900));
-    Console.WriteLine(person1);
+    var FirstAccount = bankFactory.CreateAccount(new Money(5000), BankAccountType.Saving);
+    FirstAccount.Withdraw(new Money(4900));
+    Console.WriteLine(FirstAccount);
     amountOfMoney = 235;
-    person1.Put(new Money(amountOfMoney));
-    Console.WriteLine(person1);
+    FirstAccount.Put(new Money(amountOfMoney));
+    Console.WriteLine(FirstAccount);
     amountOfMoney = 456;
-    person1.Put(new Money(amountOfMoney));
+    FirstAccount.Put(new Money(amountOfMoney));
     amountOfMoney = 44424;
-    person1.Put(new Money(amountOfMoney));
+    FirstAccount.Put(new Money(amountOfMoney));
     amountOfMoney = 23242;
-    if (person1.Withdraw(new Money(amountOfMoney)) == false)
+    if (FirstAccount.Withdraw(new Money(amountOfMoney)) == false)
         Console.WriteLine("{0} рублей снять не удалось :", amountOfMoney);
 
 
-    var person2 = new BankAccount(new Money(10000), BankAccountType.Current);
+    var SecondAccount = bankFactory.CreateAccount(new Money(10000), BankAccountType.Current);
     amountOfMoney = 1000;
-    if (person2.TransferTo(person1, new Money(amountOfMoney)) == false)
-        Console.WriteLine("{0} рублей для перевода с счета {1} нет", amountOfMoney, person2.NumberAccount);
-    Console.WriteLine(person2);
+    if (SecondAccount.TransferTo(FirstAccount, new Money(amountOfMoney)) == false)
+        Console.WriteLine("{0} рублей для перевода с счета {1} нет", amountOfMoney, SecondAccount.NumberAccount);
+    Console.WriteLine(SecondAccount);
     amountOfMoney = 55555;
-    person2.Put(new Money(amountOfMoney));
+    SecondAccount.Put(new Money(amountOfMoney));
     amountOfMoney = 32000;
-    if (person1.TransferTo(person2, new Money(amountOfMoney)) == false)
-        Console.WriteLine("{0} рублей для перевода с счета {1} нет", amountOfMoney, person2.NumberAccount);
-    PrintOperation(person1.NumberAccount, person1.Transaction);
-    PrintOperation(person2.NumberAccount, person2.Transaction);
+    if (FirstAccount.TransferTo(SecondAccount, new Money(amountOfMoney)) == false)
+        Console.WriteLine("{0} рублей для перевода с счета {1} нет", amountOfMoney, SecondAccount.NumberAccount);
+    PrintOperation(FirstAccount.NumberAccount, FirstAccount.Transaction);
+    PrintOperation(SecondAccount.NumberAccount, SecondAccount.Transaction);
 
-    Console.WriteLine(person1);
-    Console.WriteLine(person2);
+    Console.WriteLine(FirstAccount);
+    Console.WriteLine(SecondAccount);
     Console.WriteLine();
 }
 
@@ -87,7 +88,6 @@ void PrintOperation(int numberAccount, Queue<BankTransaction> _transaction)
     foreach (var operation in _transaction)
     {
         Console.WriteLine(operation.ToString());
-
     }
 }
 
