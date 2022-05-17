@@ -2,12 +2,12 @@
 {
     public abstract class BankTransaction : IEquatable<BankTransaction>
     {
-        protected readonly int _numberAccount;
+        protected readonly NumberBankAccount _numberAccount;
         protected readonly Money _money;
 
         protected readonly DateTime _dateTime;
 
-        public BankTransaction(Money amount, int numberAccount, DateTime dateTime)
+        public BankTransaction(Money amount, NumberBankAccount numberAccount, DateTime dateTime)
         {
             _money = amount;
             _dateTime = dateTime;

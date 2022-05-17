@@ -2,9 +2,9 @@
 {
     public class PaymentWithdrawBankTransaction : BankTransaction
     {
-        public readonly int _numberAccountOfTransfer;
+        public readonly NumberBankAccount _numberAccountOfTransfer;
 
-        public PaymentWithdrawBankTransaction(Money amount, int numberAccount, DateTime dateTime, int numberAccountOfTransfer) : base(amount, numberAccount, dateTime)
+        public PaymentWithdrawBankTransaction(Money amount, NumberBankAccount numberAccount, DateTime dateTime, NumberBankAccount numberAccountOfTransfer) : base(amount, numberAccount, dateTime)
         {
             _numberAccountOfTransfer = numberAccountOfTransfer;
         }

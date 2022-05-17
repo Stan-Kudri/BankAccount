@@ -2,7 +2,7 @@
 {
     public class WithdrawalsFromAccountTransaction : BankTransaction
     {
-        public WithdrawalsFromAccountTransaction(Money amount, int numberAccount, DateTime dateTime) : base(amount, numberAccount, dateTime)
+        public WithdrawalsFromAccountTransaction(Money amount, NumberBankAccount numberAccount, DateTime dateTime) : base(amount, numberAccount, dateTime)
         {
         }
 

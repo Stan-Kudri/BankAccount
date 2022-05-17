@@ -4,6 +4,8 @@
     {
         private readonly int _amount;
 
+        public bool IsZero => _amount == 0;
+
         public Money(int money)
         {
             if (money < 0)
@@ -45,10 +47,10 @@
 
         public static bool operator ==(Money? left, Money? right)
         {
-            if (object.ReferenceEquals(left, right))
+            if (ReferenceEquals(left, right))
                 return true;
 
-            return left != null && left.Equals(right);
+            return !ReferenceEquals(left, null) && left.Equals(right);
         }
 
         public static bool operator !=(Money? left, Money? right)
@@ -58,15 +60,15 @@
 
         public static bool operator >=(Money? left, Money? right)
         {
-            if (object.ReferenceEquals(left, null))
-                return object.ReferenceEquals(right, null);
+            if (ReferenceEquals(left, null))
+                return ReferenceEquals(right, null);
             return left.CompareTo(right) >= 0;
         }
 
         public static bool operator <=(Money? left, Money? right)
         {
-            if (object.ReferenceEquals(left, null))
-                return object.ReferenceEquals(right, null);
+            if (ReferenceEquals(left, null))
+                return ReferenceEquals(right, null);
             return left.CompareTo(right) <= 0;
         }
 
