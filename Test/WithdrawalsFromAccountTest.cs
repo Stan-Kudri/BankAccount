@@ -16,14 +16,14 @@ namespace Test
             var balanceAccount = new Money(balance);
             var bankFactory = new BankAccountObjectFactory();
             //Создание банковских счетов с определенным балансом из входных данных.
-            var accountBank = bankFactory.CreateAccount(10000000, balanceAccount, BankAccountType.Saving, clock);
+            var accountBank = bankFactory.CreateAccount("1111 1111 1111 1111", balanceAccount, BankAccountType.Saving, clock);
 
             //Выполнение операций с картами.
             var isFirstOperation = accountBank.Withdraw(new Money(amount));
 
             //Проверка правильности выполнения операций.
             //Создание правильной транзакции для сравнения и происходящей транзакции.
-            var transaction = new WithdrawalsFromAccountTransaction(new Money(amount), 10000000, clock.Now);
+            var transaction = new WithdrawalsFromAccountTransaction(new Money(amount), new NumberBankAccount("1111 1111 1111 1111"), clock.Now);
             var bankTransactionAccount = accountBank.PopLastTransaction();
             //Проверка значения баланса счета.
             Assert.Equal(new Money(accountAmount), accountBank.Balance);

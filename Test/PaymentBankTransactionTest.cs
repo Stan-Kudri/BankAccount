@@ -16,14 +16,15 @@ namespace Test
             var bankFactory = new BankAccountObjectFactory();
 
             //Создание операций, которые должны были произойти в картсчете определенной карты.
-            var firstTransactionBankAcount = new WithdrawalsFromAccountTransaction(new Money(amountMoney), 10000000, clock.Now);
-            var secondTransactionBankAcount = new PutInAccountTransaction(new Money(amountMoney), 10000000, clock.Now);
+            var firstTransactionBankAcount = new WithdrawalsFromAccountTransaction(new Money(amountMoney), new NumberBankAccount("1111 1111 1111 1111"), clock.Now);
+            var secondTransactionBankAcount = new PutInAccountTransaction(new Money(amountMoney), new NumberBankAccount("1111 1111 1111 1111"), clock.Now);
 
             //Создание банковского счета с определенным балансом из входных данных.
-            var AccountBank = bankFactory.CreateAccount(10000000, balanceAccount, BankAccountType.Current, clock);
+            var AccountBank = bankFactory.CreateAccount("1111 1111 1111 1111", balanceAccount, BankAccountType.Current, clock);
             //Выполнение операций с картой.
-            AccountBank.Put(new Money(amountMoney));
+
             AccountBank.Withdraw(new Money(amountMoney));
+            AccountBank.Put(new Money(amountMoney));
 
             //Проверка правильности выполнения операций.
             //Проверка баланса.
@@ -46,12 +47,12 @@ namespace Test
             var bankFactory = new BankAccountObjectFactory();
 
             //Создание операций, которые должны были произойти в картсчете определенной карты.
-            var transactionFirstAcount = new PaymentWithdrawBankTransaction(new Money(transferAmounMoney), 10000000, clock.Now, 10000001);
-            var transactionSecondAcount = new PaymentToPutBankTransaction(new Money(transferAmounMoney), 10000001, clock.Now);
+            var transactionFirstAcount = new PaymentWithdrawBankTransaction(new Money(transferAmounMoney), new NumberBankAccount("1111 1111 1111 1111"), clock.Now, new NumberBankAccount("2222 2222 2222 2222"));
+            var transactionSecondAcount = new PaymentToPutBankTransaction(new Money(transferAmounMoney), new NumberBankAccount("2222 2222 2222 2222"), clock.Now);
 
             //Создание банковских счетов с определенным балансом из входных данных.
-            var firstAccountBank = bankFactory.CreateAccount(10000000, balanceAccount, BankAccountType.Current, clock);
-            var secondAccountBank = bankFactory.CreateAccount(10000001, balanceAccount, BankAccountType.Current, clock);
+            var firstAccountBank = bankFactory.CreateAccount("1111 1111 1111 1111", balanceAccount, BankAccountType.Current, clock);
+            var secondAccountBank = bankFactory.CreateAccount("2222 2222 2222 2222", balanceAccount, BankAccountType.Current, clock);
 
             //Выполнение перевода денег с счета на счет.
             firstAccountBank.TransferTo(secondAccountBank, new Money(transferAmounMoney));

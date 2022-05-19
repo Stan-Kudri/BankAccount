@@ -14,26 +14,16 @@ namespace Bank.Domain
 {
     public class BankAccountObjectFactory
     {
-        private static Hashtable hashtable = new Hashtable(new Dictionary<int, BankAccount>());
+        private static Hashtable hashtable = new Hashtable(new Dictionary<NumberBankAccount, BankAccount>());
 
-        public BankAccount Hashtable(int bankAccountID)
-        {
-            if (!hashtable.ContainsValue(bankAccountID))
-                throw new ArgumentException("Не существует такого счета");
-            return (BankAccount)hashtable[bankAccountID];
-        }
-
-        public BankAccount CreateAccount(Money initBalance)
-        {
-            return CreateAccount(initBalance, BankAccountType.Saving);
-        }
+        public bool Active(NumberBankAccount bankAccountNumber) => hashtable.ContainsValue(bankAccountNumber);
 
         public BankAccount CreateAccount(BankAccountType type)
         {
             return CreateAccount(new Money(0), type);
         }
 
-        public BankAccount CreateAccount(Money initBalance, BankAccountType type)
+        public BankAccount CreateAccount(Money initBalance, BankAccountType type = BankAccountType.Saving)
         {
             var bankAccount = new BankAccount(initBalance, type);
             var numberBankAccount = bankAccount.NumberAccount;
@@ -42,12 +32,12 @@ namespace Bank.Domain
             return bankAccount;
         }
 
-        public BankAccount CreateAccount(int numberAccount, Money initBalance, BankAccountType type)
+        public BankAccount CreateAccount(string numberAccount, Money initBalance, BankAccountType type)
         {
             return CreateAccount(numberAccount, initBalance, type, new SystemClock());
         }
 
-        public BankAccount CreateAccount(int numberAccount, Money initBalance, BankAccountType type, ISystemClock clock)
+        public BankAccount CreateAccount(string numberAccount, Money initBalance, BankAccountType type, ISystemClock clock)
         {
             var bankAccount = new BankAccount(numberAccount, initBalance, type, clock);
             var numberBankAccount = bankAccount.NumberAccount;
@@ -56,7 +46,7 @@ namespace Bank.Domain
             return bankAccount;
         }
 
-        public void Remove(int numberAccount) => hashtable.Remove(numberAccount);
+        public void Close(NumberBankAccount numberAccount) => hashtable.Remove(numberAccount);
 
     }
 }

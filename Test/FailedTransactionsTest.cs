@@ -14,8 +14,8 @@ namespace Test
             //Создание операций, которые должны были произойти в картсчете определенной карты.
 
             //Создание банковских счетов с определенным балансом из входных данных.
-            var firstAccountBank = bankFactory.CreateAccount(10000000, balanceAcount, BankAccountType.Current);
-            var secondAccountBank = bankFactory.CreateAccount(10000001, balanceAcount, BankAccountType.Current);
+            var firstAccountBank = bankFactory.CreateAccount("1111 1111 1111 1111", balanceAcount, BankAccountType.Current);
+            var secondAccountBank = bankFactory.CreateAccount("2222 2222 2222 2222", balanceAcount, BankAccountType.Current);
 
             //Выполнение операций с картами.
             var isFirstOperation = firstAccountBank.TransferTo(secondAccountBank, new Money(withdrawAmounMoney));
@@ -42,8 +42,8 @@ namespace Test
             //Создание операций, которые должны были произойти в картсчете определенной карты.
 
             //Создание банковских счетов с определенным балансом из входных данных.
-            var firstAccountBank = bankFactory.CreateAccount(10000000, balanceAcount, BankAccountType.Current);
-            var secondAccountBank = bankFactory.CreateAccount(10000001, balanceAcount, BankAccountType.Current);
+            var firstAccountBank = bankFactory.CreateAccount("1111 1111 1111 1111", balanceAcount, BankAccountType.Current);
+            var secondAccountBank = bankFactory.CreateAccount("2222 2222 2222 2222", balanceAcount, BankAccountType.Current);
 
             //Выполнение операции по переводу 0 денег на счет.
             var operation = firstAccountBank.TransferTo(secondAccountBank, new Money(0));
@@ -68,7 +68,7 @@ namespace Test
             //Создание операций, которые должны были произойти в картсчете определенной карты.
 
             //Создание банковских счетов с определенным балансом из входных данных.
-            var AccountBank = bankFactory.CreateAccount(10000000, balanceAcount, BankAccountType.Current);
+            var AccountBank = bankFactory.CreateAccount("1111 1111 1111 1111", balanceAcount, BankAccountType.Current);
 
             //Выполнение операции по переводу 0 денег на счет.
             var operation = AccountBank.Put(new Money(0));
@@ -91,7 +91,7 @@ namespace Test
             //Создание операций, которые должны были произойти в картсчете определенной карты.
 
             //Создание банковских счетов с определенным балансом из входных данных.
-            var AccountBank = bankFactory.CreateAccount(10000000, balanceAcount, BankAccountType.Current);
+            var AccountBank = bankFactory.CreateAccount("1111 1111 1111 1111", balanceAcount, BankAccountType.Current);
 
             //Выполнение операции по переводу 0 денег на счет.
             var operation = AccountBank.Withdraw(new Money(0));

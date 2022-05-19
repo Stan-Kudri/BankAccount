@@ -1,4 +1,5 @@
 ﻿using Bank.Domain.Transaction;
+using System.Text;
 
 namespace Bank.Domain
 {
@@ -50,19 +51,19 @@ System.Collections.Queue.*/
 
     public class BankAccount
     {
-        private const int MinNumberBankAccount = 10000000;
-        private const int MaxNumberBankAccount = 99999999;
-
-        private static int _number = 10000000;
         private readonly BankAccountType _type;
         private Queue<BankTransaction> _transaction;
         private ISystemClock _systemClock;
+        private readonly NumberBankAccount _numberAccount;
 
         private string TypeBankAccountUserFriendlyName => _type == BankAccountType.Saving ? "Сберегательный" : "Накопительный";
 
         public Queue<BankTransaction> Transaction => _transaction;
 
-        public int NumberAccount { get; }
+        public NumberBankAccount NumberAccount
+        {
+            get => _numberAccount;
+        }
 
         public Money Balance { get; private set; }
 
@@ -76,16 +77,15 @@ System.Collections.Queue.*/
         {
         }
 
-        internal BankAccount(int numberAccount, Money initBalance, BankAccountType type) : this(numberAccount, initBalance, type, new SystemClock())
+        internal BankAccount(string numberAccount, Money initBalance, BankAccountType type) : this(numberAccount, initBalance, type, new SystemClock())
         {
         }
 
-        internal BankAccount(int numberAccount, Money initBalance, BankAccountType type, ISystemClock clock)
+        internal BankAccount(string numberAccount, Money initBalance, BankAccountType type, ISystemClock clock)
         {
-            if (numberAccount > MaxNumberBankAccount || numberAccount < MinNumberBankAccount)
-                throw new Exception("Номер счета содержит 8 цифр!");
-
-            NumberAccount = numberAccount;
+            if (numberAccount == null)
+                throw new ArgumentNullException("Номер счета = пустое начение");
+            _numberAccount = new NumberBankAccount(numberAccount);
             _type = type;
             _transaction = new Queue<BankTransaction>();
             _systemClock = clock;
@@ -145,12 +145,17 @@ System.Collections.Queue.*/
 
         private static bool IsZero(Money amount) => amount.Equals(new Money(0));
 
-        private static int GenerateNumberAccount()
+        public static string GenerateNumberAccount()
         {
-            if (_number + 1 <= MaxNumberBankAccount)
-                return _number++;
-
-            throw new Exception("Номера банковских счетов закончились!");
+            Random random = new Random();
+            var numberBuilder = new StringBuilder();
+            for (int i = 1; i <= 16; i++)
+            {
+                numberBuilder.Append(random.Next(0, 9));
+                if (i == 4)
+                    numberBuilder.Append(' ');
+            }
+            return numberBuilder.ToString();
         }
     }
 }

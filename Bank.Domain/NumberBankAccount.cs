@@ -48,5 +48,7 @@
             numberAccount = new string(charArray);
             return true;
         }
+
+        public override string ToString() => _numberAccount;
     }
 }
