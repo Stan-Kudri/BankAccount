@@ -54,7 +54,7 @@ System.Collections.Queue.*/
         private readonly BankAccountType _type;
         private Queue<BankTransaction> _transaction;
         private ISystemClock _systemClock;
-        private readonly NumberBankAccount _numberAccount;
+        private NumberBankAccount _numberBankAccount;
 
         private string TypeBankAccountUserFriendlyName => _type == BankAccountType.Saving ? "Сберегательный" : "Накопительный";
 
@@ -62,7 +62,11 @@ System.Collections.Queue.*/
 
         public NumberBankAccount NumberAccount
         {
-            get => _numberAccount;
+            get => _numberBankAccount;
+            private set
+            {
+                _numberBankAccount = value;
+            }
         }
 
         public Money Balance { get; private set; }
@@ -73,19 +77,19 @@ System.Collections.Queue.*/
         internal BankAccount(BankAccountType type) : this(new Money(0), type)
         { }
 
-        internal BankAccount(Money initBalance, BankAccountType type) : this(GenerateNumberAccount(), initBalance, type)
+        internal BankAccount(Money initBalance, BankAccountType type) : this(Generate(), initBalance, type)
         {
         }
 
-        internal BankAccount(string numberAccount, Money initBalance, BankAccountType type) : this(numberAccount, initBalance, type, new SystemClock())
+        internal BankAccount(NumberBankAccount numberAccount, Money initBalance, BankAccountType type) : this(numberAccount, initBalance, type, new SystemClock())
         {
         }
 
-        internal BankAccount(string numberAccount, Money initBalance, BankAccountType type, ISystemClock clock)
+        internal BankAccount(NumberBankAccount numberAccount, Money initBalance, BankAccountType type, ISystemClock clock)
         {
             if (numberAccount == null)
                 throw new ArgumentNullException("Номер счета = пустое начение");
-            _numberAccount = new NumberBankAccount(numberAccount);
+            _numberBankAccount = numberAccount;
             _type = type;
             _transaction = new Queue<BankTransaction>();
             _systemClock = clock;
@@ -145,7 +149,7 @@ System.Collections.Queue.*/
 
         private static bool IsZero(Money amount) => amount.Equals(new Money(0));
 
-        public static string GenerateNumberAccount()
+        public static NumberBankAccount Generate()
         {
             Random random = new Random();
             var numberBuilder = new StringBuilder();
@@ -155,7 +159,7 @@ System.Collections.Queue.*/
                 if (i == 4)
                     numberBuilder.Append(' ');
             }
-            return numberBuilder.ToString();
+            return new NumberBankAccount(numberBuilder.ToString());
         }
     }
 }

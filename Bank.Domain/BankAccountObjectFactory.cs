@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-/*Упражнение 11.1 Создать новый класс, который будет являться 
+﻿/*Упражнение 11.1 Создать новый класс, который будет являться 
 фабрикой объектов класса банковский счет. Изменить модификатор доступа у 
 конструкторов класса банковский счет на internal. Добавить в фабричный класс 
 перегруженные методы создания счета CreateAccount, которые бы вызывали 
@@ -14,9 +12,9 @@ namespace Bank.Domain
 {
     public class BankAccountObjectFactory
     {
-        private static Hashtable hashtable = new Hashtable(new Dictionary<NumberBankAccount, BankAccount>());
+        private Dictionary<NumberBankAccount, BankAccount> hashtable = new Dictionary<NumberBankAccount, BankAccount>();
 
-        public bool Active(NumberBankAccount bankAccountNumber) => hashtable.ContainsValue(bankAccountNumber);
+        public bool Active(NumberBankAccount bankAccountNumber) => hashtable.ContainsKey(bankAccountNumber);
 
         public BankAccount CreateAccount(BankAccountType type)
         {
@@ -39,7 +37,7 @@ namespace Bank.Domain
 
         public BankAccount CreateAccount(string numberAccount, Money initBalance, BankAccountType type, ISystemClock clock)
         {
-            var bankAccount = new BankAccount(numberAccount, initBalance, type, clock);
+            var bankAccount = new BankAccount(new NumberBankAccount(numberAccount), initBalance, type, clock);
             var numberBankAccount = bankAccount.NumberAccount;
 
             hashtable.Add(numberBankAccount, bankAccount);

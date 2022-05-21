@@ -4,7 +4,7 @@
     {
         const int SizeOfNumberAccount = 19;
 
-        private readonly string _numberAccount;
+        private string _numberAccount;
 
         public string NumberAccount => _numberAccount;
 
@@ -50,5 +50,24 @@
         }
 
         public override string ToString() => _numberAccount;
+
+        public bool Equals(NumberBankAccount? number)
+        {
+            if (number == null)
+                return false;
+            return _numberAccount == number._numberAccount;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is NumberBankAccount number)
+                return Equals(number);
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return _numberAccount.GetHashCode();
+        }
     }
 }
